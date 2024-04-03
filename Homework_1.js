@@ -8,10 +8,12 @@
 // For subtraction, ensure that the first parameter is always greater than the second parameter.
 // Division should only result in an integer value.
 
-const str1 = "111111111111111111111111111111111111111111"; // string1 has to be > string2
-const str2 = "9";
+const str1 = "99999999"; // string1 has to be > string2
+const str2 = "123";
 
-function homeworkPlusMinus(string1, string2, operation) {
+// String.plus(string): This function should take another string as input and return the result of adding the two strings together.
+
+function homeworkPlus(string1, string2, operation) {
   const longerStringLength =
     string1.length > string2.length ? string1.length : string2.length;
   const strings = [string1, string2].map((item) =>
@@ -34,28 +36,80 @@ function homeworkPlusMinus(string1, string2, operation) {
       leftover: 0,
     }
   );
-
   return res.leftover + res.digits.join("");
 }
-
-// String.plus(string): This function should take another string as input and return the result of adding the two strings together.
-
 const stringPlus = (a, c) => a + c;
 
 // String.minus(string): This function should take another string as input and return the result of subtracting the second string from the first string. Note that the first parameter will always be greater than the second parameter.
 
-const stringMinus = (a, c, i) => {
-  if (i === 0) {
-    return c;
+function stringMinus(str1, str2) {
+  // Pad the shorter string with zeros on the left to match the length of the longer string
+  const maxLength = Math.max(str1.length, str2.length);
+  str1 = str1.padStart(maxLength, "0");
+  str2 = str2.padStart(maxLength, "0");
+
+  let result = "";
+  let borrow = 0;
+
+  // Iterate through the digits from right to left
+  for (let i = maxLength - 1; i >= 0; i--) {
+    const digit1 = str1[i];
+    const digit2 = str2[i];
+
+    // Subtract the digits and borrow
+    let diff =
+      digit1.charCodeAt(0) -
+      "0".charCodeAt(0) -
+      (digit2.charCodeAt(0) - "0".charCodeAt(0)) -
+      borrow;
+
+    // If the result is negative, borrow from the next digit
+    if (diff < 0) {
+      diff += 10;
+      borrow = 1;
+    } else {
+      borrow = 0;
+    }
+
+    // Convert the result back to character
+    const charResult = String.fromCharCode(diff + "0".charCodeAt(0));
+
+    // Append the result to the left of the string
+    result = charResult + result;
   }
-  return a - c;
-};
+
+  // Trim leading zeros
+  result = result.replace(/^0+/, "");
+
+  return result || "0"; // Return '0' if result is empty
+}
+
+// String.multiply(string): This function should take another string as input and return the result of multiplying the two strings together.
+
+function stringMultiply(string1, string2) {
+  const num1 = string1.split("").map(Number);
+  const num2 = string2.split("").map(Number);
+  const len1 = num1.length;
+  const len2 = num2.length;
+
+  const result = new Array(len1 + len2).fill(0);
+
+  for (let i = len1 - 1; i >= 0; i--) {
+    for (let j = len2 - 1; j >= 0; j--) {
+      const product = num1[i] * num2[j];
+      const sum = product + result[i + j + 1];
+      result[i + j] += (sum / 10) | 0;
+      result[i + j + 1] = sum % 10;
+    }
+  }
+  return result.join("").replace(/^0+/, "") || "0";
+}
 
 //   String.divide(string): This function should take another string as input and return the result of dividing the first string by the second string. Division should only result in an integer value.
 
-function homeworkDivide(string1, string2) {
+function stringDivide(string1, string2) {
   if (string2 === "0") {
-    return "Infinity"; // Or any other suitable indication for division by zero
+    return "Infinity";
   }
 
   const num1 = string1.split("").map(Number);
@@ -65,6 +119,11 @@ function homeworkDivide(string1, string2) {
 
   if (len1 < len2 || (len1 === len2 && string1 < string2)) {
     return "0"; // If string1 < string2, division result will be 0
+  }
+
+  // Pad string2 with zeros on the left until its length matches string1
+  while (num2.length < len1) {
+    num2.unshift(0);
   }
 
   const result = [];
@@ -78,7 +137,6 @@ function homeworkDivide(string1, string2) {
       dividend = subtract(dividend, divisor);
     }
     result.push(quotientDigit);
-    divisor.unshift(0); // Shift divisor left to match dividend length
   }
 
   return result.join("").replace(/^0+/, "") || "0";
@@ -100,7 +158,7 @@ function subtract(arr1, arr2) {
   const result = [];
   let borrow = 0;
 
-  for (let i = 0; i < arr1.length; i++) {
+  for (let i = arr1.length - 1; i >= 0; i--) {
     let diff = arr1[i] - (arr2[i] || 0) - borrow;
     if (diff < 0) {
       diff += 10;
@@ -108,41 +166,20 @@ function subtract(arr1, arr2) {
     } else {
       borrow = 0;
     }
-    result.push(diff);
+    result.unshift(diff);
   }
 
   return result;
 }
 
-// String.multiply(string): This function should take another string as input and return the result of multiplying the two strings together.
-
-function homeworkMulti(string1, string2) {
-  const num1 = string1.split("").map(Number);
-  const num2 = string2.split("").map(Number);
-  const len1 = num1.length;
-  const len2 = num2.length;
-
-  const result = new Array(len1 + len2).fill(0);
-
-  for (let i = len1 - 1; i >= 0; i--) {
-    for (let j = len2 - 1; j >= 0; j--) {
-      const product = num1[i] * num2[j];
-      const sum = product + result[i + j + 1];
-      result[i + j] += (sum / 10) | 0;
-      result[i + j + 1] = sum % 10;
-    }
-  }
-  return result.join("").replace(/^0+/, "") || "0";
-}
-
-const plus = homeworkPlusMinus(str1, str2, stringPlus);
+const plus = homeworkPlus(str1, str2, stringPlus);
 console.log(`${str1} + ${str2} = ${plus}`);
 
-const minus = homeworkPlusMinus(str1, str2, stringMinus);
+const minus = stringMinus(str1, str2);
 console.log(`${str1} - ${str2} = ${minus}`);
 
-const divide = homeworkDivide(str1, str2);
-console.log(`${str1} / ${str2} = ${divide}`);
-
-const multiply = homeworkMulti(str1, str2);
+const multiply = stringMultiply(str1, str2);
 console.log(`${str1} * ${str2} = ${multiply}`);
+
+const divide = stringDivide(str1, str2);
+console.log(`${str1} / ${str2} = ${divide}`);
