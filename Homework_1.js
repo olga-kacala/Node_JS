@@ -8,8 +8,8 @@
 // For subtraction, ensure that the first parameter is always greater than the second parameter.
 // Division should only result in an integer value.
 
-const str1 = "10"; // string1 has to be > string2
-const str2 = "2";
+const str1 = "111111111111111111111111111111111111111111"; // string1 has to be > string2
+const str2 = "9";
 
 function homeworkPlusMinus(string1, string2, operation) {
   const longerStringLength =
@@ -54,6 +54,10 @@ const stringMinus = (a, c, i) => {
 //   String.divide(string): This function should take another string as input and return the result of dividing the first string by the second string. Division should only result in an integer value.
 
 function homeworkDivide(string1, string2) {
+  if (string2 === "0") {
+    return "Infinity"; // Or any other suitable indication for division by zero
+  }
+
   const num1 = string1.split("").map(Number);
   const num2 = string2.split("").map(Number);
   const len1 = num1.length;
@@ -65,15 +69,16 @@ function homeworkDivide(string1, string2) {
 
   const result = [];
   let dividend = num1.slice();
+  let divisor = num2.slice();
 
-  while (dividend.length) {
+  while (isGreaterOrEqual(dividend, divisor)) {
     let quotientDigit = 0;
-    while (isGreaterOrEqual(dividend, num2)) {
+    while (isGreaterOrEqual(dividend, divisor)) {
       quotientDigit++;
-      dividend = subtract(dividend, num2);
+      dividend = subtract(dividend, divisor);
     }
     result.push(quotientDigit);
-    dividend.shift();
+    divisor.unshift(0); // Shift divisor left to match dividend length
   }
 
   return result.join("").replace(/^0+/, "") || "0";
