@@ -8,8 +8,8 @@
 // For subtraction, ensure that the first parameter is always greater than the second parameter.
 // Division should only result in an integer value.
 
-const str1 = "10000000"; // string1 has to be > string2
-const str2 = "2";
+const str1 = "12345"; // string1 has to be > string2
+const str2 = "12345";
 
 // String.plus(string): This function should take another string as input and return the result of adding the two strings together.
 
@@ -143,9 +143,9 @@ function stringDivide(string1, string2) {
 }
 
 function isGreaterOrEqual(arr1, arr2) {
-  if (arr1.length !== arr2.length) {
-    return arr1.length > arr2.length;
-  }
+  // if (arr1.length !== arr2.length) {
+  //   return arr1.length > arr2.length;
+  // }
   for (let i = 0; i < arr1.length; i++) {
     if (arr1[i] !== arr2[i]) {
       return arr1[i] > arr2[i];
