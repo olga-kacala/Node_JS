@@ -8,8 +8,8 @@
 // For subtraction, ensure that the first parameter is always greater than the second parameter.
 // Division should only result in an integer value.
 
-const str1 = "12345"; // string1 has to be > string2
-const str2 = "12345";
+const str1 = "100"; // string1 has to be > string2
+const str2 = "2";
 
 // String.plus(string): This function should take another string as input and return the result of adding the two strings together.
 
@@ -172,33 +172,26 @@ function subtract(arr1, arr2) {
   return result;
 }
 
-const plus = homeworkPlus(str1, str2, stringPlus);
-console.log(`${str1} + ${str2} = ${plus}`);
-
-const minus = stringMinus(str1, str2);
-console.log(`${str1} - ${str2} = ${minus}`);
-
-const multiply = stringMultiply(str1, str2);
-console.log(`${str1} * ${str2} = ${multiply}`);
-
-const divide = stringDivide(str1, str2);
-console.log(`${str1} / ${str2} = ${divide}`);
-
 String.prototype.plus = function (otherString) {
-  return homeworkPlus(this.toString(), otherString.toString(), stringPlus);
+  return homeworkPlus(this, otherString, stringPlus);
 };
 
 String.prototype.minus = function (otherString) {
-  return stringMinus(this.toString(), otherString.toString());
+  return stringMinus(this, otherString);
 };
 
 String.prototype.multiply = function (otherString) {
-  return stringMultiply(this.toString(), otherString.toString());
+  return stringMultiply(this, otherString);
 };
 
 String.prototype.divide = function (otherString) {
-  return stringDivide(this.toString(), otherString.toString());
+  return stringDivide(this, otherString);
 };
+
+console.log(`${str1} + ${str2} = ${str1.plus(str2)}`);
+console.log(`${str1} - ${str2} = ${str1.minus(str2)}`);
+console.log(`${str1} * ${str2} = ${str1.multiply(str2)}`);
+console.log(`${str1} / ${str2} = ${str1.divide(str2)}`);
 
 console.log(
   "plus:" +
