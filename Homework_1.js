@@ -8,12 +8,12 @@
 // For subtraction, ensure that the first parameter is always greater than the second parameter.
 // Division should only result in an integer value.
 
-const str1 = "99999999"; // string1 has to be > string2
-const str2 = "123";
+const str1 = "10000000"; // string1 has to be > string2
+const str2 = "2";
 
 // String.plus(string): This function should take another string as input and return the result of adding the two strings together.
 
-function homeworkPlus(string1, string2, operation) {
+function homeworkPlus(string1, string2) {
   const longerStringLength =
     string1.length > string2.length ? string1.length : string2.length;
   const strings = [string1, string2].map((item) =>
@@ -25,7 +25,7 @@ function homeworkPlus(string1, string2, operation) {
       const a = cur;
       const b = strings[1][ind];
       const c = acc.leftover;
-      const sum = [a, b, c].map(Number).reduce(operation, 0);
+      const sum = [a, b, c].map(Number).reduce(stringPlus, 0);
       const newDigit = String(sum).at(-1);
       const newDigits = [newDigit, ...acc.digits];
       const newLeftover = String(sum).slice(0, -1);
@@ -183,3 +183,46 @@ console.log(`${str1} * ${str2} = ${multiply}`);
 
 const divide = stringDivide(str1, str2);
 console.log(`${str1} / ${str2} = ${divide}`);
+
+String.prototype.plus = function (otherString) {
+  return homeworkPlus(this.toString(), otherString.toString(), stringPlus);
+};
+
+String.prototype.minus = function (otherString) {
+  return stringMinus(this.toString(), otherString.toString());
+};
+
+String.prototype.multiply = function (otherString) {
+  return stringMultiply(this.toString(), otherString.toString());
+};
+
+String.prototype.divide = function (otherString) {
+  return stringDivide(this.toString(), otherString.toString());
+};
+
+console.log(
+  "plus:" +
+    "90099999999999999999900999999999999999999009999999999999999990099999999999999999".plus(
+      "900999999999999999999009999999999999999990099999999999999999900999999999999999999009999999999999999990099999999999999999"
+    )
+);
+console.log(
+  "minus:" +
+    "90099999999999999999900999999999999999999009999999999999999990099999999999999999".minus(
+      "9009999999999999999990099999999999999999900999999999999999999009999999999999999"
+    )
+);
+
+console.log(
+  "multi:" +
+    "9009999999999999999990099999999999999999".multiply(
+      "90099999999999999999900999999999999999999009999999999999999990099999999999999999900999999999999999999009999999999999999990099999999999999999900999999999999999999009999999999999999990099999999999999999"
+    )
+);
+
+console.log(
+  "divide: " +
+    "222222222222222222222222222222222222222222222222222222222222222222".divide(
+      "2"
+    )
+);
