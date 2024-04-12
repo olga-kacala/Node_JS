@@ -1,29 +1,17 @@
 const AdvancedDataTransformation = require("./Homework_2");
 
 function functionExample() {
-    return "Suprise! I am a function";
-  }
+  return "Suprise! I am a function";
+}
 
 // Test cases
 
 // console.log("Add values: strings, numbers and bigINt");
 // console.log(AdvancedDataTransformation.addValues(5, 10));
-// console.log(AdvancedDataTransformation.addValues("5", 10));
 // console.log(AdvancedDataTransformation.addValues("Homework 2", " is fun"));
-// console.log(
-//   AdvancedDataTransformation.addValues(
-//     9999999999999999999999999999999999,
-//     "5"
-//   )
-// );
-
-// console.log("Add values: arrays");
 // console.log(AdvancedDataTransformation.addValues([1, 2], [3, 4]));
-
-// console.log("Add values: objects");
-// console.log(AdvancedDataTransformation.addValues({ a: 1 }, { b: 2 }));
-
 // console.log("Add values: errors");
+// console.log(AdvancedDataTransformation.addValues({ a: 1 }, { b: 2 }));
 // console.log(AdvancedDataTransformation.addValues(true, false));
 // console.log(AdvancedDataTransformation.addValues(true, 1));
 // console.log(AdvancedDataTransformation.addValues(Symbol("foo"), Symbol("bar")));
@@ -63,3 +51,9 @@ function functionExample() {
 // console.log(typeof AdvancedDataTransformation.stringifyValue(undefined));
 // console.log(AdvancedDataTransformation.stringifyValue(null));
 // console.log(typeof AdvancedDataTransformation.stringifyValue(null));
+// console.log(AdvancedDataTransformation.invertBoolean(true));
+// console.log(AdvancedDataTransformation.convertToNumber('3,14'))
+// console.log(AdvancedDataTransformation.convertToNumber('3.14'))
+// console.log(AdvancedDataTransformation.convertToNumber(true))
+// console.log(AdvancedDataTransformation.convertToNumber(false))
+console.log(AdvancedDataTransformation.coerceToType(10, 'string'))

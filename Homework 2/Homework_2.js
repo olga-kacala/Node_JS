@@ -9,17 +9,26 @@ const AdvancedDataTransformation = {
     const argXtypeOf = typeof x;
     const argYtypeOf = typeof y;
 
-    if (argXtypeOf === "number"  && argYtypeOf === "number") {
+    if (argXtypeOf === "number" && argYtypeOf === "number") {
       return x + y;
-    }
-      else if (argXtypeOf === "bigint"  && argYtypeOf === "bigint") {
-        return x + y;
+    } else if (argXtypeOf === "bigint" && argYtypeOf === "bigint") {
+      return x + y;
+    } else if (argXtypeOf === "string" && argYtypeOf === "string") {
+      return x + y;
     } else if (Array.isArray(x) && Array.isArray(y)) {
-        x.forEach(element => {
-
-            
-        });
-      return x.concat(y);;
+      if (x.length != y.length) {
+        throw new Error("Arrays must have the same length");
+      }
+      x.forEach((element, index) => {
+        if (typeof element !== "number" || typeof y[index] !== "number") {
+          throw new Error("All elements in both arrays must be numbers");
+        }
+      });
+      const newArr = [];
+      for (i = 0; i < x.length; i++) {
+        newArr.push(x[i] + y[i]);
+      }
+      return newArr;
     } else {
       throw new Error(
         `Addition not possible for the given types: ${argXtypeOf} & ${argYtypeOf}`
@@ -50,13 +59,41 @@ const AdvancedDataTransformation = {
     }
   },
   // invertBoolean: Accepts a single boolean argument and returns its inverted value. If the argument is not a boolean, it should throw an error.
+  invertBoolean: function (x) {
+    const typeXof = typeof x;
+
+    if (typeXof === "boolean") {
+      return !x;
+    } else {
+      throw new Error("Argument not a boolean");
+    }
+  },
 
   // convertToNumber: Accepts a single argument of any type and attempts to convert it to a number. For strings, use parseFloat() or parseInt() for conversion. For other types, use appropriate operations or functions to perform the conversion. If the conversion is not possible, it should throw an error.
+  convertToNumber: function (x) {
+    const typeXof = typeof x;
+    if (typeXof === "number") {
+      return x;
+    } else if (typeXof === "string") {
+      if (x.includes(",") || x.includes(".")) {
+        return parseFloat(x.replace(",", "."));
+      } else {
+        return parseFloat(x);
+      }
+    } else if (typeXof === "boolean") {
+      return Number(x);
+    } else {
+      throw new Error("Conversion to number not possible");
+    }
+  },
 
   // coerceToType: Accepts two arguments: value and type. It attempts to convert the value to the specified type using type coercion. The function should return the coerced value if successful. If the coercion is not possible, it should throw an error.
+  coerceToType: function(x,y){
+    if (y ==="string") {
+      return String(x);
+    }
 
+  }
   // (Optional) Implement additional functions of your choice that demonstrate advanced type conversion scenarios or cater to specific use cases related to primitive types. You are encouraged to explore complex scenarios and push the limits of type conversion.
 };
 module.exports = AdvancedDataTransformation;
-
-
