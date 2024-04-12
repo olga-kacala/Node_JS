@@ -8,6 +8,7 @@ function functionExample() {
 
 // console.log("Add values: strings, numbers and bigINt");
 // console.log(AdvancedDataTransformation.addValues(5, 10));
+// console.log(AdvancedDataTransformation.addValues(BigInt(5), BigInt(10)));
 // console.log(AdvancedDataTransformation.addValues("Homework 2", " is fun"));
 // console.log(AdvancedDataTransformation.addValues([1, 2], [3, 4]));
 // console.log("Add values: errors");
@@ -59,5 +60,5 @@ function functionExample() {
 // console.log(AdvancedDataTransformation.coerceToType(10.9, 'string'))
 // console.log(AdvancedDataTransformation.coerceToType(11, 'null'));
 // console.log(AdvancedDataTransformation.coerceToType(11, 'undefined'));
-console.log(AdvancedDataTransformation.coerceToType(11, 'object'))
-console.log(typeof(AdvancedDataTransformation.coerceToType(11, 'object')))
+// console.log(AdvancedDataTransformation.coerceToType(11, 'object'))
+// console.log(typeof(AdvancedDataTransformation.coerceToType(11, 'object')))

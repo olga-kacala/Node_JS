@@ -108,7 +108,7 @@ const AdvancedDataTransformation = {
     } else if (type === "undefined") {
       return undefined;
     } else {
-      throw new Error(`Convertion not possible from ${value} to ${type}`);
+      throw new Error(`Coercion not possible from ${value} to ${type}`);
     }
   },
   // (Optional) Implement additional functions of your choice that demonstrate advanced type conversion scenarios or cater to specific use cases related to primitive types. You are encouraged to explore complex scenarios and push the limits of type conversion.
