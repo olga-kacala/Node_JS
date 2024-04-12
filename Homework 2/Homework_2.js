@@ -94,13 +94,7 @@ const AdvancedDataTransformation = {
     } else if (type === "string") {
       return String(value);
     } else if (type === "boolean") {
-      if (value === 0) {
-        return false;
-      } else if (value === 1) {
-        return true;
-      } else {
-        throw new Error("Boolean value must be 0 or 1");
-      }
+      return Boolean(value);
     } else if (type === "object") {
       return { value };
     } else if (type === "null") {
@@ -112,5 +106,36 @@ const AdvancedDataTransformation = {
     }
   },
   // (Optional) Implement additional functions of your choice that demonstrate advanced type conversion scenarios or cater to specific use cases related to primitive types. You are encouraged to explore complex scenarios and push the limits of type conversion.
+
+  //deepMerge: performs deep merging of two objects.
+  deepMergeWithAddition: function (obj1, obj2) {
+    if (typeof obj1 !== "object" || typeof obj2 !== "object") {
+      throw new Error("Inputs must be objects");
+    }
+    const mergedObj = {};
+    // Merge keys from obj1
+    for (let key in obj1) {
+      if (obj1.hasOwnProperty(key)) {
+        // If obj2 also has the key and both values are numbers, add them
+        if (
+          obj2.hasOwnProperty(key) &&
+          typeof obj1[key] === "number" &&
+          typeof obj2[key] === "number"
+        ) {
+          mergedObj[key] = obj1[key] + obj2[key];
+        } else {
+          mergedObj[key] = obj1[key]; // Otherwise, use value from obj1
+        }
+      }
+    }
+    // Merge keys from obj2 that are not in obj1
+    for (let key in obj2) {
+      if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
+        mergedObj[key] = obj2[key];
+      }
+    }
+
+    return mergedObj;
+  },
 };
 module.exports = AdvancedDataTransformation;

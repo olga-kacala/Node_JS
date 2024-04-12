@@ -1,8 +1,5 @@
 const AdvancedDataTransformation = require("./Homework_2");
 
-function functionExample() {
-  return "Suprise! I am a function";
-}
 
 // Test cases
 
@@ -44,6 +41,9 @@ function functionExample() {
 // console.log(typeof AdvancedDataTransformation.stringifyValue(true));
 // console.log(AdvancedDataTransformation.stringifyValue(false));
 // console.log(typeof AdvancedDataTransformation.stringifyValue(false));
+// function functionExample() {
+//   return "Suprise! I am a function";
+// }
 // console.log(AdvancedDataTransformation.stringifyValue(functionExample));
 // console.log(typeof AdvancedDataTransformation.stringifyValue(functionExample));
 // console.log(AdvancedDataTransformation.stringifyValue(Symbol("foo")));
@@ -52,13 +52,33 @@ function functionExample() {
 // console.log(typeof AdvancedDataTransformation.stringifyValue(undefined));
 // console.log(AdvancedDataTransformation.stringifyValue(null));
 // console.log(typeof AdvancedDataTransformation.stringifyValue(null));
+
+// console.log("Invert to boolean: ");
 // console.log(AdvancedDataTransformation.invertBoolean(true));
+
+// console.log("Convert to number: ");
 // console.log(AdvancedDataTransformation.convertToNumber('3,14'))
 // console.log(AdvancedDataTransformation.convertToNumber('3.14'))
 // console.log(AdvancedDataTransformation.convertToNumber(true))
 // console.log(AdvancedDataTransformation.convertToNumber(false))
+
+// console.log("Coerce to type: ");
 // console.log(AdvancedDataTransformation.coerceToType(10.9, 'string'))
 // console.log(AdvancedDataTransformation.coerceToType(11, 'null'));
 // console.log(AdvancedDataTransformation.coerceToType(11, 'undefined'));
 // console.log(AdvancedDataTransformation.coerceToType(11, 'object'))
+// console.log(AdvancedDataTransformation.coerceToType(0, 'boolean'))
+// console.log(AdvancedDataTransformation.coerceToType(1, 'boolean'))
+// console.log(AdvancedDataTransformation.coerceToType(null, 'boolean'))
+// console.log(AdvancedDataTransformation.coerceToType(20, 'boolean'))
 // console.log(typeof(AdvancedDataTransformation.coerceToType(11, 'object')))
+
+// console.log("Let's have fun with advanced type conversion: ");
+// const obj1 = { a: 99, b: 1, c: 2 };
+// const obj2 = { a: 8, b: 7, e: 4 };
+// const mergedObj = AdvancedDataTransformation.deepMergeWithAddition(obj1, obj2);
+// console.log(mergedObj);
+
+
+
+
