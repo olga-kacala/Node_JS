@@ -56,4 +56,8 @@ function functionExample() {
 // console.log(AdvancedDataTransformation.convertToNumber('3.14'))
 // console.log(AdvancedDataTransformation.convertToNumber(true))
 // console.log(AdvancedDataTransformation.convertToNumber(false))
-console.log(AdvancedDataTransformation.coerceToType(10, 'string'))
+// console.log(AdvancedDataTransformation.coerceToType(10.9, 'string'))
+// console.log(AdvancedDataTransformation.coerceToType(11, 'null'));
+// console.log(AdvancedDataTransformation.coerceToType(11, 'undefined'));
+console.log(AdvancedDataTransformation.coerceToType(11, 'object'))
+console.log(typeof(AdvancedDataTransformation.coerceToType(11, 'object')))

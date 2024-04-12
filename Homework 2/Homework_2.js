@@ -88,12 +88,29 @@ const AdvancedDataTransformation = {
   },
 
   // coerceToType: Accepts two arguments: value and type. It attempts to convert the value to the specified type using type coercion. The function should return the coerced value if successful. If the coercion is not possible, it should throw an error.
-  coerceToType: function(x,y){
-    if (y ==="string") {
-      return String(x);
+  coerceToType: function (value, type) {
+    if (type === "number") {
+      return value;
+    } else if (type === "string") {
+      return String(value);
+    } else if (type === "boolean") {
+      if (value === 0) {
+        return false;
+      } else if (value === 1) {
+        return true;
+      } else {
+        throw new Error("Boolean value must be 0 or 1");
+      }
+    } else if (type === "object") {
+      return { value };
+    } else if (type === "null") {
+      return null;
+    } else if (type === "undefined") {
+      return undefined;
+    } else {
+      throw new Error(`Convertion not possible from ${value} to ${type}`);
     }
-
-  }
+  },
   // (Optional) Implement additional functions of your choice that demonstrate advanced type conversion scenarios or cater to specific use cases related to primitive types. You are encouraged to explore complex scenarios and push the limits of type conversion.
 };
 module.exports = AdvancedDataTransformation;
