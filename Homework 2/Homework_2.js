@@ -15,6 +15,8 @@ const AdvancedDataTransformation = {
       return x + y;
     } else if (argXtypeOf === "string" && argYtypeOf === "string") {
       return x + y;
+    } else if (argXtypeOf === "boolean" && argYtypeOf === "boolean") {
+      return x + y;
     } else if (Array.isArray(x) && Array.isArray(y)) {
       if (x.length != y.length) {
         throw new Error("Arrays must have the same length");
@@ -29,6 +31,8 @@ const AdvancedDataTransformation = {
         newArr.push(x[i] + y[i]);
       }
       return newArr;
+    } else if (argXtypeOf === "object") {
+      return this.deepMergeWithAddition(x, y);
     } else {
       throw new Error(
         `Addition not possible for the given types: ${argXtypeOf} & ${argYtypeOf}`
