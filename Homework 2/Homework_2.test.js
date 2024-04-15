@@ -18,6 +18,11 @@ describe("Adding values", () => {
       4, 6,
     ]);
   });
+  test("Add arrays error", () => {
+    expect(() => {
+      AdvancedDataTransformation.addValues([1, 2], [3, 4, 5]);
+    }).toThrow("Arrays must have the same length");
+  });
   test("Add Bool and number", () => {
     expect(() => {
       AdvancedDataTransformation.addValues(true, 1);
@@ -111,15 +116,13 @@ describe("String convertion:", () => {
     ).toBe("string");
   });
   test("from undefined", () => {
-    expect(AdvancedDataTransformation.stringifyValue(undefined)).toBe(
-      "undefined"
-    );
+    expect(()=> {
+      AdvancedDataTransformation.stringifyValue(undefined)}).toThrow("Unable convert undefined value to string")
   });
   test("from null", () => {
     expect(AdvancedDataTransformation.stringifyValue(null)).toBe("null");
   });
 });
-
 describe("Invert to boolean", () => {
   test("Invert true", () => {
     expect(AdvancedDataTransformation.invertBoolean(true)).toBe(false);
