@@ -1,6 +1,5 @@
 const AdvancedDataTransformation = require("./Homework_2");
 
-
 // Test cases
 
 // console.log("Add values: strings, numbers and bigINt");
@@ -12,6 +11,8 @@ console.log(AdvancedDataTransformation.addValues("Homework 2", " is fun"));
 // console.log(AdvancedDataTransformation.addValues(true, false));
 // console.log(AdvancedDataTransformation.addValues(true, 1));
 // console.log(AdvancedDataTransformation.addValues(Symbol("foo"), Symbol("bar")));
+
+// console.log(AdvancedDataTransformation.addValues(NaN, NaN));
 
 // console.log("String convertion: ");
 // console.log(AdvancedDataTransformation.stringifyValue("word"));
@@ -79,5 +80,3 @@ console.log(AdvancedDataTransformation.addValues("Homework 2", " is fun"));
 // const obj2 = { a: 8, b: 7, e: 4 };
 // const mergedObj = AdvancedDataTransformation.deepMergeWithAddition(obj1, obj2);
 // console.log(mergedObj);
-
-

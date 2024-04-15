@@ -39,6 +39,11 @@ describe("Adding values", () => {
       ).toThrow("Addition not possible for the given types: symbol & symbol")
     );
   });
+  test("Add NaNs", () => {
+    expect(() => AdvancedDataTransformation.addValues(NaN, NaN)).toThrow(
+      "Cannot add NaN values"
+    );
+  });
 });
 
 describe("String convertion:", () => {
@@ -116,8 +121,9 @@ describe("String convertion:", () => {
     ).toBe("string");
   });
   test("from undefined", () => {
-    expect(()=> {
-      AdvancedDataTransformation.stringifyValue(undefined)}).toThrow("Unable convert undefined value to string")
+    expect(() => {
+      AdvancedDataTransformation.stringifyValue(undefined);
+    }).toThrow("Unable convert undefined value to string");
   });
   test("from null", () => {
     expect(AdvancedDataTransformation.stringifyValue(null)).toBe("null");

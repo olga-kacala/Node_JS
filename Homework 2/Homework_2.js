@@ -18,11 +18,15 @@ const AdvancedDataTransformation = {
         newArr.push(x[i] + y[i]);
       }
       return newArr;
-    }
-    if (argXtypeOf === "object" && argYtypeOf === "object") {
+    } else if (argXtypeOf === "object" && argYtypeOf === "object") {
       return this.deepMergeWithAddition(x, y);
-    }
-    if (argXtypeOf === argYtypeOf) {
+    } else if (
+      argXtypeOf === argYtypeOf &&
+      Number.isNaN(x) &&
+      Number.isNaN(y)
+    ) {
+      throw new Error("Cannot add NaN values");
+    } else if (argXtypeOf === argYtypeOf) {
       if (
         argXtypeOf === "number" ||
         argXtypeOf === "bigint" ||
@@ -31,10 +35,10 @@ const AdvancedDataTransformation = {
       ) {
         return x + y;
       }
-    }
-    throw new Error(
-      `Addition not possible for the given types: ${argXtypeOf} & ${argYtypeOf}`
-    );
+    } else
+      throw new Error(
+        `Addition not possible for the given types: ${argXtypeOf} & ${argYtypeOf}`
+      );
   },
 
   // stringifyValue: Accepts a single argument of any type and converts it to a string representation. For objects and arrays, use JSON.stringify() for serialization. For other types, use the appropriate built-in methods or operations to convert them to strings.
