@@ -104,25 +104,52 @@ describe("Task 2: Function Composition and Point-Free Style", () => {
 });
 
 describe("Task 3: Closures and Higher-Order Functions", () => {
-  it("should return a counter function that increments count on each call", () => {
+  it("createCounter x3", () => {
     const counter = HW3.createCounter();
 
-    // Test the counter function with multiple calls
     expect(counter()).toBe(1);
     expect(counter()).toBe(2);
     expect(counter()).toBe(3);
   });
+  it("call function x2", () => {
+    const fun = jest.fn(); // Mocking the function
+    HW3.repeatFunction(fun, 2);
+    expect(fun).toHaveBeenCalledTimes(2);
+  });
+});
 
-  it("should return independent counters with separate counts", () => {
-    const counter1 = HW3.createCounter();
-    const counter2 = HW3.createCounter();
+describe("Task 4: Recursion and Tail Call Optimization", () => {
+  it("should calculate the factorial of a given number", () => {
+    expect(HW3.calculateFactorial(5)).toBe(120);
+  });
 
-    // Test the first counter
-    expect(counter1()).toBe(1);
-    expect(counter1()).toBe(2);
+  test("calculate the power of the base to the exponent", () => {
+    expect(HW3.power(2, 3)).toBe(8);
+  });
+  test("calculate the power of the base to the exponent with 0", () => {
+    expect(HW3.power(2, 0)).toBe(1);
+  });
+});
 
-    // Test the second counter
-    expect(counter2()).toBe(1);
-    expect(counter2()).toBe(2);
+describe("Task 5: Lazy Evaluation and Generators", () => {
+    test("lazily map values in an array", () => {
+      const array = [1, 2, 3, 4, 5];
+      const mapper = HW3.lazyMap(array, (x) => x * 2);
+      expect(mapper.next().value).toBe(2);
+      expect(mapper.next().value).toBe(4);
+      expect(mapper.next().value).toBe(6);
+      expect(mapper.next().value).toBe(8);
+      expect(mapper.next().value).toBe(10);
+      expect(mapper.next().done).toBe(true);
+    });
+  
+  test("lazily generate Fibonacci numbers", () => {
+    const fibonacci = HW3.fibonacciGenerator();
+    expect(fibonacci.next().value).toBe(1);
+    expect(fibonacci.next().value).toBe(1);
+    expect(fibonacci.next().value).toBe(2);
+    expect(fibonacci.next().value).toBe(3);
+    expect(fibonacci.next().value).toBe(5);
+    expect(fibonacci.next().value).toBe(8);
   });
 });

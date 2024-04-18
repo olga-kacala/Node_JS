@@ -77,16 +77,59 @@ const HW3 = {
 
   // Implement a recursive function called calculateFactorial that calculates the factorial of a given number. Optimize the function to use tail call optimization to avoid stack overflow for large input numbers.
 
+  calculateFactorial: function (num, accumulator = 1) {
+    if (num === 0) {
+      return accumulator;
+    } else {
+      return this.calculateFactorial(num - 1, num * accumulator);
+    }
+  },
+
   // Create a recursive function called power that takes a base and an exponent as arguments. The function should calculate the power of the base to the exponent using recursion.
+
+  power: function (base, exp) {
+    if (exp === 0) {
+      return 1;
+    } else if (exp > 0) {
+      return base * this.power(base, exp - 1);
+    } else {
+      return 1 / this.power(base, -exp);
+    }
+  },
 
   // Task 5: Lazy Evaluation and Generators (*do not use yield)
 
   // Implement a lazy evaluation function called lazyMap that takes an array and a mapping function. The function should return a lazy generator that applies the mapping function to each element of the array one at a time.
-  
+
+  lazyMap: function (array, mappingFunction) {
+    let index = 0;
+
+    return {
+      next: function () {
+        if (index < array.length) {
+          return { value: mappingFunction(array[index++]), done: false };
+        } else {
+          return { done: true };
+        }
+      },
+    };
+  },
+
   // Create a lazy generator function called fibonacciGenerator that generates Fibonacci numbers one at a time using lazy evaluation.
+
+  fibonacciGenerator: function () {
+    let prev = 0;
+    let current = 1;
+
+    return {
+      next: function () {
+        const value = current;
+        current += prev;
+        prev = value;
+        return { value, done: false };
+      },
+    };
+  },
 };
-const fun = () => {
-  return console.log("hello");
-};
-HW3.repeatFunction(fun, 5);
+
 module.exports = HW3;

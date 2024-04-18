@@ -1,1 +1,1 @@
-5
+console.log(HW3.calculateFactorial(5))
