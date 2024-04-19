@@ -31,8 +31,26 @@ const HW3 = {
 
   // Create a function called filterUniqueWords that takes a string of text and returns an array of unique words, sorted in alphabetical order, without using explicit loops. Use function composition and point-free style.
 
+  // filterUniqueWords: function (text) {
+  //   return [...new Set(text.split(" ").sort())];
+  // },
+
+  getWordsOfText: function (text) {
+    return text.replace(/[^\w\s]/g, "").split(" ");
+  },
+
+  filterUniqueValues: function (values) {
+    return [...new Set(values)];
+  },
+
+  sortAlphabetically(values) {
+    return values.sort();
+  },
+
   filterUniqueWords: function (text) {
-    return [...new Set(text.split(" ").sort())];
+    return this.sortAlphabetically(
+      this.filterUniqueValues(this.getWordsOfText(text))
+    );
   },
 
   // Implement a function called getAverageGrade that takes an array of student objects, each containing a name and grades property. The function should return the average grade of all students, without modifying the original array or its items. Use function composition and point-free style.
