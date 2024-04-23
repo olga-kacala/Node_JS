@@ -1,20 +1,53 @@
 // Homework 4
 // Deadline: 26 April
 
-const HW4 = {
-
-
 // Task 1: Object Property Manipulation
 // Create an object called person with the following properties and values:
 
-// firstName: "John"
-// lastName: "Doe"
-// age: 30
-// email: "john.doe@example.com"
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 30,
+  email: "john.doe@example.com",
+};
+
+const newInfo = {
+  firstName: "Alice",
+  lastName: "Bow",
+  age: 55,
+  email: "alice.bow@example.com",
+};
 
 // Use property descriptors to make all properties of the person object read-only and non-writable, so their values cannot be changed directly.
+
+Object.keys(person).forEach((key) => {
+  Object.defineProperty(person, key, {
+    value: person[key],
+    writable: false,
+    enumerable: true,
+    configurable: false,
+  });
+});
+
 // Implement a method called updateInfo on the person object that takes a new info object as an argument. The info object should contain updated values for any of the properties (e.g., { firstName: "Jane", age: 32 }). Ensure that this method adheres to the read-only property descriptor set earlier.
+
+const updateInfo = (newInfo) => {
+  Object.keys(newInfo).forEach((key) => {
+    if (Object.getOwnPropertyDescriptor(person, key).writable) {
+      person[key] = newInfo[key];
+    }
+  });
+  return person;
+};
+
 // Create a new property called address on the person object with an initial value of an empty object. Make this property non-enumerable and non-configurable.
+
+Object.defineProperty(person, "address", {
+  value: {},
+  writable: true,
+  configurable: false,
+  enumerable: false,
+});
 
 // Task 2: Object Property Enumeration and Deletion
 // Create a new object called product with the following properties and values:
@@ -48,4 +81,4 @@ const HW4 = {
 // Task 7: Object Property Validation
 // Implement a function called validateObject that takes an object and a validation schema as arguments. The schema should define the required properties, their types, and any additional validation rules. The function should return true if the object matches the schema, and false otherwise. You can choose any schema you want.
 
-}
+module.exports = { updateInfo };
