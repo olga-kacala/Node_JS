@@ -3,19 +3,11 @@
 
 // Task 1: Object Property Manipulation
 // Create an object called person with the following properties and values:
-
 const person = {
   firstName: "John",
   lastName: "Doe",
   age: 30,
   email: "john.doe@example.com",
-};
-
-const newInfo = {
-  firstName: "Alice",
-  lastName: "Bow",
-  age: 55,
-  email: "alice.bow@example.com",
 };
 
 // Use property descriptors to make all properties of the person object read-only and non-writable, so their values cannot be changed directly.
@@ -30,6 +22,13 @@ Object.keys(person).forEach((key) => {
 });
 
 // Implement a method called updateInfo on the person object that takes a new info object as an argument. The info object should contain updated values for any of the properties (e.g., { firstName: "Jane", age: 32 }). Ensure that this method adheres to the read-only property descriptor set earlier.
+
+const newInfo = {
+  firstName: "Alice",
+  lastName: "Bow",
+  age: 55,
+  email: "alice.bow@example.com",
+};
 
 const updateInfo = (newInfo) => {
   Object.keys(newInfo).forEach((key) => {
@@ -52,13 +51,50 @@ Object.defineProperty(person, "address", {
 // Task 2: Object Property Enumeration and Deletion
 // Create a new object called product with the following properties and values:
 
-// name: "Laptop"
-// price: 1000
-// quantity: 5
+const product = {
+  name: "Laptop",
+  price: 1000,
+  quantity: 5,
+};
 
 // Use property descriptors to make the price and quantity properties non-enumerable and non-writable.
+
+Object.defineProperty(product, "price", {
+  value: 1000,
+  writable: false,
+  configurable: true,
+  enumerable: false,
+});
+Object.defineProperty(product, "quantity", {
+  value: 5,
+  writable: false,
+  configurable: true,
+  enumerable: false,
+});
+
 // Implement a function called getTotalPrice that takes the product object as an argument and returns the total price (calculated as price * quantity). Ensure that the function accesses the non-enumerable properties directly using the Object.getOwnPropertyDescriptor method.
+
+const getTotalPrice = (product) => {
+  const price = Object.getOwnPropertyDescriptor(product, "price");
+  const quantity = Object.getOwnPropertyDescriptor(product, "quantity");
+  const totalPrice = price.value * quantity.value;
+  return totalPrice;
+};
+
 // Implement a function called deleteNonConfigurable that takes an object and a property name as arguments. The function should delete the specified property from the object if it exists. If the property is non-configurable, throw an error with an appropriate message.
+
+const deleteNonConfigurable = (object, property) => {
+  if (object.hasOwnProperty(property)) {
+    const nonconf = Object.getOwnPropertyDescriptor(object, property);
+    if (nonconf.configurable === true) {
+      delete object[property];
+    } else {
+      throw new Error("Property is non-configurable");
+    }
+  } else {
+    throw new Error("Property not existing");
+  }
+};
 
 // Task 3: Object Property Getters and Setters
 // Create an object called bankAccount with the following properties and values:
@@ -81,4 +117,11 @@ Object.defineProperty(person, "address", {
 // Task 7: Object Property Validation
 // Implement a function called validateObject that takes an object and a validation schema as arguments. The schema should define the required properties, their types, and any additional validation rules. The function should return true if the object matches the schema, and false otherwise. You can choose any schema you want.
 
-module.exports = { updateInfo };
+module.exports = {
+  updateInfo,
+  person,
+  newInfo,
+  product,
+  getTotalPrice,
+  deleteNonConfigurable,
+};
