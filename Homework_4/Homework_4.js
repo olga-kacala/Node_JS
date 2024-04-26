@@ -130,11 +130,6 @@ const bankAccount = {
   },
 };
 
-// console.log(bankAccount.formattedBalance);
-// bankAccount.balance = 90;
-// console.log(bankAccount.balance);
-// console.log(bankAccount.formattedBalance);
-
 // Implement a method called transfer on the bankAccount object that takes two bankAccount objects and an amount as arguments. The method should transfer the specified amount from the current account to the target account. Ensure that the balance and formattedBalance properties of both accounts are updated correctly.
 
 bankAccount.transfer = function (account1, account2, amount) {
@@ -178,15 +173,127 @@ const targetAccount = {
 // Implement a function called createImmutableObject that takes an object as an argument and returns a new object with all its properties made read-only and non-writable using property descriptors. The function should handle nested objects and arrays recursively.
 // Use the createImmutableObject function to create an immutable version of the person object from Task 1.
 
+function createImmutableObject(obj) {
+  const immutableObj = {};
+
+  Object.keys(obj).forEach((key) => {
+    const propertyDescriptor = Object.getOwnPropertyDescriptor(obj, key);
+    if (
+      propertyDescriptor.value !== null &&
+      typeof propertyDescriptor.value === "object"
+    ) {
+      immutableObj[key] = createImmutableObject(obj[key]);
+    } else {
+      Object.defineProperty(immutableObj, key, {
+        value: obj[key],
+        writable: false,
+        enumerable: true,
+        configurable: false,
+      });
+    }
+  });
+  return immutableObj;
+}
+
+// const immutablePerson = createImmutableObject(person);
+// console.log(immutablePerson);
+// console.log(Object.getOwnPropertyDescriptor(immutablePerson, 'firstName').configurable);
+
 // Task 5: Object Observation
 // Implement a function called observeObject that takes an object and a callback function as arguments. The function should return a proxy object that wraps the original object and invokes the callback function whenever any property of the object is accessed or modified.
 // Use the observeObject function to create a proxy for the person object from Task 1. The callback function should log the property name and the action (get or set) performed on the object.
 
+function observeObject(obj, callback) {
+  return new Proxy(obj, {
+    get(target, property, receiver) {
+      callback(property, "get");
+      return Reflect.get(target, property, receiver);
+    },
+    set(target, property, value, receiver) {
+      callback(property, "set");
+      return Reflect.set(target, property, value, receiver);
+    },
+  });
+}
+
+const observedPerson = observeObject(person, (property, action) => {
+  console.log(`Property '${property}' was ${action} on the object.`);
+});
+
+// console.log(observedPerson.firstName)
+// observedPerson.age = 100;
+
 // Task 6: Object Deep Cloning
 // Implement a function called deepCloneObject that takes an object as an argument and returns a deep copy of the object. The function should handle circular references and complex nested structures. Do not use JSON methods.
 
+function deepCloneObject(obj, clonedObjects = new WeakMap()) {
+  if (typeof obj !== "object" || obj === null) {
+    return obj;
+  }
+  if (clonedObjects.has(obj)) {
+    return clonedObjects.get(obj);
+  }
+  let clone;
+  if (Array.isArray(obj)) {
+    clone = [];
+  } else {
+    clone = Object.create(Object.getPrototypeOf(obj));
+  }
+  clonedObjects.set(obj, clone);
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      clone[key] = deepCloneObject(obj[key], clonedObjects);
+    }
+  }
+  return clone;
+}
+
+const originalObject = {
+  name: "John",
+  age: 30,
+  address: {
+    city: "New York",
+    country: "USA",
+  },
+};
+
+// originalObject.self = originalObject; // Circular reference
+
+// const clonedObject = deepCloneObject(originalObject);
+
+// clonedObject.name = "Jane";
+// clonedObject.address.city = "Los Angeles";
+
+// console.log("Original Object:", originalObject);
+// console.log("Cloned Object:", clonedObject);
+
 // Task 7: Object Property Validation
 // Implement a function called validateObject that takes an object and a validation schema as arguments. The schema should define the required properties, their types, and any additional validation rules. The function should return true if the object matches the schema, and false otherwise. You can choose any schema you want.
+
+function validateObject(obj, schema) {
+  for (const key in schema) {
+    if (!obj.hasOwnProperty(key)) {
+      return false;
+    }
+    const expectedType = schema[key];
+    const actualType = typeof obj[key];
+    if (actualType !== expectedType) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// Example schema
+const personSchema = {
+  firstName: "string",
+  lastName: "string",
+  age: "number",
+  email: "string",
+};
+
+// console.log(validateObject(person, personSchema)); //true
 
 module.exports = {
   person,
@@ -197,4 +304,9 @@ module.exports = {
   deleteNonConfigurable,
   bankAccount,
   targetAccount,
+  createImmutableObject,
+  deepCloneObject,
+  originalObject,
+  validateObject,
+  personSchema,
 };
