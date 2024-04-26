@@ -1,1 +1,4 @@
-console.log(bankAccount.formattedBalance); // Output: $1500
+console.log(bankAccount.formattedBalance);
+// bankAccount.balance = 90;
+// console.log(bankAccount.balance);
+// console.log(bankAccount.formattedBalance);

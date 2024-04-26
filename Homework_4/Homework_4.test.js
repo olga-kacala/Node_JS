@@ -1,29 +1,38 @@
 const {
-  updateInfo,
   person,
-  newInfo,
+  newPerson,
   product,
   getTotalPrice,
   deleteNonConfigurable,
+  bankAccount,
+  targetAccount,
 } = require("./Homework_4");
 
 describe("Task 1: Object Property Manipulation", () => {
-  test("original person object", () => {
-    expect(person).toEqual({
-      firstName: "John",
-      lastName: "Doe",
-      age: 30,
-      email: "john.doe@example.com",
-    });
+  test("Properties of person object should be read-only and non-writable", () => {
+    person.firstName = "Jane"; // Attempt to change the value
+    expect(person.firstName).toBe("John");
+
+    person.age = 140; // Attempt to change the value
+    expect(person.age).toBe(30);
   });
-  test("person object unchanged by newInfo", () => {
-    const updatedPerson = updateInfo(newInfo);
-    expect(updatedPerson).toEqual({
-      firstName: "John",
-      lastName: "Doe",
-      age: 30,
-      email: "john.doe@example.com",
-    });
+
+  test("updateInfo method should update properties", () => {
+    person.updateInfo(newPerson);
+    expect(person.firstName).toBe("Jane");
+    expect(person.age).toBe(55);
+  });
+
+  test("New property address should be non-enumerable & non-configurable", () => {
+    const addressDescriptor = Object.getOwnPropertyDescriptor(
+      person,
+      "address"
+    );
+
+    expect(addressDescriptor.enumerable).toBe(false);
+    expect(addressDescriptor.configurable).toBe(false);
+    expect(addressDescriptor.writable).toBe(true);
+    expect(addressDescriptor.value).toEqual({});
   });
 });
 
@@ -79,5 +88,28 @@ describe("Task 2: Object Property Enumeration and Deletion", () => {
     expect(() => {
       deleteNonConfigurable(obj, "city");
     }).toThrow("Property not existing");
+  });
+});
+
+describe("Task 3: Object Property Getters and Setters", () => {
+  test("Transfer $200 from bankAccount to targetAccount", () => {
+    bankAccount.transfer(bankAccount, targetAccount, 200);
+
+    expect(bankAccount.balance).toBe(800);
+    expect(targetAccount.balance).toBe(700);
+  });
+
+  test("Attempt transfer with insufficient balance", () => {
+    bankAccount.balance = 100;
+
+    const errorMock = jest.spyOn(console, "error");
+    errorMock.mockImplementation(() => {});
+
+    bankAccount.transfer(bankAccount, targetAccount, 200);
+
+    expect(console.error).toHaveBeenCalledWith(
+      "Insufficient balance in the source account."
+    );
+    errorMock.mockRestore();
   });
 });
