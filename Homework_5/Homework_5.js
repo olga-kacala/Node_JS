@@ -99,12 +99,18 @@ const list = [
 
 function getArrayIntersection(arr1, arr2) {
   const commonArr = [];
+  const result = [];
   arr1.forEach((item) => {
-    if (arr2.includes(item)) {
+    if (!commonArr.includes(item)) {
       commonArr.push(item);
     }
   });
-  return commonArr;
+  commonArr.forEach((item) => {
+    if (arr2.includes(item)) {
+      result.push(item);
+    }
+  });
+  return result;
 }
 
 function getArrayUnion(arr1, arr2) {
@@ -113,14 +119,11 @@ function getArrayUnion(arr1, arr2) {
   return uniqueArray;
 }
 
-let array1 = [1, 2, 3, 4, 4];
-let array2 = [3, 5, 6, 7];
-let array3 = [1, "a", "ok"];
-let array4 = [3, 4, 5, 6, "ok"];
+let array1 = [1, 2, 3, 4, 5, 2, "a"];
+let array2 = ["a", "b", "c", 2, "d", "c", 3];
 
-// console.log(getArrayIntersection(array1, array2));
-// console.log(getArrayIntersection(array3, array4));
-// console.log(getArrayUnion(array1, array2));
+console.log(getArrayIntersection(array1, array2));
+console.log(getArrayUnion(array1, array2));
 
 // Task 5: Array Performance Analysis
 // Implement a function called measureArrayPerformance that takes a function and an array as arguments. The measureArrayPerformance function should execute the provided function with the given array as input and measure the execution time.
@@ -134,17 +137,13 @@ function measureArrayPerformance(func, arr) {
   return executionTime;
 }
 
-
 const array = [1, 2, 3, 4, 5];
 
+// const mapExecutionTime = measureArrayPerformance(arr => arr.map(x => x * 2), array);
+// console.log(`Map Execution Time: ${mapExecutionTime} milliseconds`);
 
-const mapExecutionTime = measureArrayPerformance(arr => arr.map(x => x * 2), array);
-console.log(`Map Execution Time: ${mapExecutionTime} milliseconds`);
+// const filterExecutionTime = measureArrayPerformance(arr => arr.filter(x => x % 2 === 0), array);
+// console.log(`Filter Execution Time: ${filterExecutionTime} milliseconds`);
 
-
-const filterExecutionTime = measureArrayPerformance(arr => arr.filter(x => x % 2 === 0), array);
-console.log(`Filter Execution Time: ${filterExecutionTime} milliseconds`);
-
-
-const customExecutionTime = measureArrayPerformance(customShuffle, array);
-console.log(`Custom shuffle Execution Time: ${customExecutionTime} milliseconds`);
+// const customExecutionTime = measureArrayPerformance(customShuffle, array);
+// console.log(`Custom shuffle Execution Time: ${customExecutionTime} milliseconds`);
