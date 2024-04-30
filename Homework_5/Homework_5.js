@@ -7,17 +7,34 @@
 
 function customFilterUnique(arr, callback) {
   const uniqueArr = [];
-  const uniqueKey = [];
+  const count = {};
 
   arr.forEach((item) => {
     const callbackKey = callback(item);
-    if (!uniqueKey.includes(callbackKey)) {
-      uniqueKey.push(callbackKey);
+    if (count[callbackKey] === undefined) {
+      count[callbackKey] = 1;
+    } else {
+      count[callbackKey]++;
+    }
+  });
+  arr.forEach((item) => {
+    const callbackKey = callback(item);
+    if (count[callbackKey] === 1) {
       uniqueArr.push(item);
     }
   });
+
   return uniqueArr;
 }
+
+const arr11 = [
+  { id: 1, name: "test" },
+  { id: 2, name: "foo" },
+  { id: 3, boo: 3 },
+  { id: 2, isAdmin: false },
+];
+
+const arr22 = [1, 2, "a", "b", 2, "b", 3];
 
 const persons = [
   { key: 1, name: "John" },
@@ -31,6 +48,9 @@ const persons = [
 
 // console.log(customFilterUnique(persons, (person) => person.name));
 // console.log(customFilterUnique(persons, (person) => person.key));
+
+// console.log(customFilterUnique(arr11, (el) => el.id));
+// console.log(customFilterUnique(arr22, (el) => el));
 
 // Task 2: Array Chunking
 // Create a function called chunkArray that takes an array and a chunk size as arguments. The chunkArray function should divide the array into smaller arrays, each containing elements of the specified chunk size. The function should return an array of arrays.
@@ -107,11 +127,24 @@ let array4 = [3, 4, 5, 6, "ok"];
 // Use the measureArrayPerformance function to compare the performance of built-in array methods (map, filter, reduce, etc.) against your custom array manipulation functions.
 
 function measureArrayPerformance(func, arr) {
-    const startTime = performance.now();
-    func(arr);
-    const endTime = performance.now();
-    const executionTime = endTime - startTime;
-    console.log(`Execution time: ${executionTime} milliseconds`);
+  const startTime = performance.now();
+  func(arr);
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+  return executionTime;
 }
 
-console.log(measureArrayPerformance(customShuffle,array4));
+
+const array = [1, 2, 3, 4, 5];
+
+
+const mapExecutionTime = measureArrayPerformance(arr => arr.map(x => x * 2), array);
+console.log(`Map Execution Time: ${mapExecutionTime} milliseconds`);
+
+
+const filterExecutionTime = measureArrayPerformance(arr => arr.filter(x => x % 2 === 0), array);
+console.log(`Filter Execution Time: ${filterExecutionTime} milliseconds`);
+
+
+const customExecutionTime = measureArrayPerformance(customShuffle, array);
+console.log(`Custom shuffle Execution Time: ${customExecutionTime} milliseconds`);
