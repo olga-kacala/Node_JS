@@ -110,17 +110,17 @@ function debounce(func, delay) {
   };
 }
 
-function debouncedSearch(query) {
-  // Perform search operation with the query
-  console.log("Searching for:", query);
-}
+// function debouncedSearch(query) {
+//   // Perform search operation with the query
+//   console.log("Searching for:", query);
+// }
 
-const debouncedSearchHandler = debounce(debouncedSearch, 300);
+// const debouncedSearchHandler = debounce(debouncedSearch, 300);
 
-const inputElement = document.getElementById("search-input");
-inputElement.addEventListener("input", (event) => {
-  debouncedSearchHandler(event.target.value);
-});
+// const inputElement = document.getElementById("search-input");
+// inputElement.addEventListener("input", (event) => {
+//   debouncedSearchHandler(event.target.value);
+// });
 
 // ### **Task 5: Implementing Throttle Function**
 
@@ -138,11 +138,24 @@ inputElement.addEventListener("input", (event) => {
 // - If the interval has elapsed, execute the provided function and update the last execution timestamp.
 // 1. Test your `throttle` function by using it to throttle a scroll event listener. Ensure that the provided function is executed at most once within the specified time interval during rapid scrolling.
 
-// **Example**
+function throttle(func, interval) {
+  let lastExecutionTime = 0;
+
+  return function (...args) {
+    const currentTime = Date.now();
+
+    if (currentTime - lastExecutionTime >= interval) {
+      func.apply(this, args);
+      lastExecutionTime = currentTime;
+    }
+  };
+}
+
+// // **Example**
 
 // function onScroll(event) {
-// 	// Handle scroll event
-// 	console.log("Scroll event:", event);
+//   // Handle scroll event
+//   console.log("Scroll event:", event);
 // }
 
 // const throttledScrollHandler = throttle(onScroll, 1000);
@@ -162,19 +175,30 @@ inputElement.addEventListener("input", (event) => {
 // 2. The curried function should keep accepting arguments until it has received the specified number of arguments (`arity`). Once all arguments are received, the original function should be executed with the collected arguments.
 // 3. If the curried function is invoked with fewer arguments than `arity`, it should return a new curried function that waits for the remaining arguments.
 
+function curry(func, arity) {
+  return function curried(...args) {
+    if (args.length >= arity) {
+      return func.apply(this, args);
+    } else {
+      return function (...nextArgs) {
+        return curried.apply(this, args.concat(nextArgs));
+      };
+    }
+  };
+}
+
 // **Example**
+function multiply(a, b, c) {
+  return a * b * c;
+}
 
-// function multiply(a, b, c) {
-// 	return a * b * c;
-// }
+const curriedMultiply = curry(multiply, 3);
 
-// const curriedMultiply = curry(multiply, 3);
+const step1 = curriedMultiply(2); // Returns a curried function
+const step2 = step1(3); // Returns a curried function
+const result = step2(4); // Returns the final result: 2 * 3 * 4 = 24
 
-// const step1 = curriedMultiply(2); // Returns a curried function
-// const step2 = step1(3); // Returns a curried function
-// const result = step2(4); // Returns the final result: 2 * 3 * 4 = 24
-
-// console.log("Result:", result); // Expected: 24
+console.log("Result:", result); // Expected: 24
 
 // ### **Challenge *(optional)***
 

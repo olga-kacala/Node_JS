@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Implementing Throttle Function Test</title>
+  </head>
+  <body>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <h1>Scroll</h1>
+    <script>
+      function throttle(func, interval) {
+        let lastExecutionTime = 0;
+        return function (...args) {
+          const currentTime = Date.now();
+          if (currentTime - lastExecutionTime >= interval) {
+            func.apply(this, args);
+            lastExecutionTime = currentTime;
+          }
+        };
+      }
+      function onScroll(event) {
+        console.log("Scroll event:", event);
+      }
+      const throttledScrollHandler = throttle(onScroll, 1000);
+      window.addEventListener("scroll", throttledScrollHandler);
+    </script>
+  </body>
+</html>
