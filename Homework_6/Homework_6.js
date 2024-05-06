@@ -51,7 +51,7 @@ const template =
 
 const highlighted = highlightKeywords(template, keywords);
 
-console.log(highlighted);
+// console.log(highlighted);
 // Expected: "Learn <span class='highlight'>JavaScript</span> tagged templates to create custom <span class='highlight'>template</span> literals for <span class='highlight'>tagged</span> manipulation."
 
 // Task 3: Multiline Tagged Template
@@ -59,14 +59,14 @@ console.log(highlighted);
 // Implement a multiline tagged template function called multiline that takes a template string and returns a string with line numbers added at the beginning of each line. The line numbers should start from 1 and increase for each line. Preserve the original indentation of each line.
 
 function multiline(template) {
-  return function () {
+
     const lines = template.raw[0].trim().split("\n");
     const result = lines
       .map((line, index) => `${index + 1} ${line}`)
       .join("\n");
     return result;
   };
-}
+
 
 const code = multiline`
 function add(a, b) {
@@ -74,7 +74,7 @@ return a + b;
 }
 `;
 
-// console.log(code());
+// console.log(code);
 // Expected:
 // "1 function add(a, b) {
 //  2 return a + b;
