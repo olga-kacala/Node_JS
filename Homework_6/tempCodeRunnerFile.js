@@ -1,2 +1,1 @@
-
-          combinedArgs.push(arg === '_' ? nextArgs[argsIndex++] : arg);
+Expected: "Learn <span class='highlight'>JavaScript</span> tagged templates to create custom <span class='highlight'>template</span> literals for <span class='highlight'>tagged</span> manipulation."
