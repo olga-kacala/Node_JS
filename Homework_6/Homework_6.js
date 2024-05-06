@@ -198,8 +198,47 @@ const step1 = curriedMultiply(2); // Returns a curried function
 const step2 = step1(3); // Returns a curried function
 const result = step2(4); // Returns the final result: 2 * 3 * 4 = 24
 
-console.log("Result:", result); // Expected: 24
+// console.log("Result:", result); // Expected: 24
 
 // ### **Challenge *(optional)***
 
 // Extend your currying function to allow partial application. Implement a special symbol (e.g., `_`) that represents a placeholder for missing arguments. The curried function should be able to accept arguments in any order, while placeholders are used for missing arguments
+
+function challengeCurry(func, arity) {
+  return function curried(...args) {
+    if (args.length >= arity && args.every((arg) => arg !== "_")) {
+      return func.apply(this, args);
+    } else {
+      return function (...nextArgs) {
+        const combinedArgs = [];
+        let argsIndex = 0;
+        for (const arg of args) {
+          combinedArgs.push(arg === "_" ? nextArgs[argsIndex++] : arg);
+        }
+        return curried.apply(
+          this,
+          combinedArgs.concat(nextArgs.slice(argsIndex))
+        );
+      };
+    }
+  };
+}
+
+// Example usage with placeholder
+function multiply(a, b, c) {
+  return a * b * c;
+}
+
+const AcurriedMultiply = challengeCurry(multiply, 3);
+
+const Astep1 = AcurriedMultiply(2)(3)(4);
+const Aresult = Astep1;
+
+// console.log("Passing all arguments at once:", Aresult); // Expected: 24
+
+const BcurriedMultiply = challengeCurry(multiply, 3);
+
+const Bstep1 = BcurriedMultiply(2, "_", 4);
+const Bresult = Bstep1(3);
+
+// console.log("Placeholder for the second argument:", Bresult); // Expected: 24
