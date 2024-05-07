@@ -186,7 +186,7 @@ function curry(func, arity) {
     }
   };
 }
-
+`
 // **Example**
 function multiply(a, b, c) {
   return a * b * c;
@@ -197,48 +197,54 @@ const curriedMultiply = curry(multiply, 3);
 const step1 = curriedMultiply(2); // Returns a curried function
 const step2 = step1(3); // Returns a curried function
 const result = step2(4); // Returns the final result: 2 * 3 * 4 = 24
-
+`
 // console.log("Result:", result); // Expected: 24
 
 // ### **Challenge *(optional)***
 
 // Extend your currying function to allow partial application. Implement a special symbol (e.g., `_`) that represents a placeholder for missing arguments. The curried function should be able to accept arguments in any order, while placeholders are used for missing arguments
 
-function challengeCurry(func, arity) {
+
+function challengeCurry(func, arity = func.length) {
   return function curried(...args) {
-    if (args.length >= arity && args.every((arg) => arg !== "_")) {
-      return func.apply(this, args);
+    const combinedArgs = [];
+    let argsIndex = 0;
+    for (const arg of args) {
+      if (arg !== "_") {
+        combinedArgs.push(arg);
+      } else if (argsIndex < arity) {
+        combinedArgs.push(undefined);
+        argsIndex++;
+      }
+    }
+    if (combinedArgs.length >= arity) {
+      return func.apply(this, combinedArgs);
     } else {
       return function (...nextArgs) {
-        const combinedArgs = [];
-        let argsIndex = 0;
-        for (const arg of args) {
-          combinedArgs.push(arg === "_" ? nextArgs[argsIndex++] : arg);
+        const allArgs = [...combinedArgs];
+        let nextArgsIndex = 0;
+      
+        for (let i = 0; i < combinedArgs.length; i++) {
+          if (combinedArgs[i] === undefined) {
+            allArgs[i] = nextArgs[nextArgsIndex++];
+          }
         }
-        return curried.apply(
-          this,
-          combinedArgs.concat(nextArgs.slice(argsIndex))
-        );
+        return curried.apply(this, allArgs.concat(nextArgs.slice(nextArgsIndex)));
       };
     }
   };
 }
 
-// Example usage with placeholder
+`// Example usage with placeholder
 function multiply(a, b, c) {
   return a * b * c;
 }
 
-const AcurriedMultiply = challengeCurry(multiply, 3);
-
-const Astep1 = AcurriedMultiply(2)(3)(4);
-const Aresult = Astep1;
-
-// console.log("Passing all arguments at once:", Aresult); // Expected: 24
-
-const BcurriedMultiply = challengeCurry(multiply, 3);
-
-const Bstep1 = BcurriedMultiply(2, "_", 4);
-const Bresult = Bstep1(3);
-
-// console.log("Placeholder for the second argument:", Bresult); // Expected: 24
+let step1 = challengeCurry(multiply);
+let step2 = step1('_');
+let addMissingArgs = step2(4);
+let step3 = addMissingArgs(2)
+let result2 = step3(3)
+// Returns the final result: 2 * 3 * 4 = 24
+console.log("Result:", result2); // Expected: 24`
+`
