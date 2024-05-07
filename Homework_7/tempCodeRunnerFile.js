@@ -1,0 +1,2 @@
+
+          resolveArr[index] = result;

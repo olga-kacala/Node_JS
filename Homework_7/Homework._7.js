@@ -9,24 +9,44 @@
 // If all promises resolve, the resolved value of the returned promise should be an array containing the resolved values of the input promises, in the same order.
 // If any promise rejects, the returned promise should reject with the reason of the first rejected promise.
 
-function promiseAll (arr) {
-return new Promise
+function promiseAll(arr) {
+  return new Promise((resolve, reject) => {
+    let count = 0;
+    let resolveArr = [];
 
+    arr.forEach((promise, index) => {
+      promise
+        .then((result) => {
+          count++;
+          resolveArr[index] = result;
+
+          if (count === arr.length) {
+            resolve(resolveArr);
+          }
+        })
+        .catch(reject);
+    });
+  });
 }
 
 // Example
-const promises = [
-  Promise.resolve(1),
-  Promise.resolve(2),
-  Promise.resolve(3)
-];
+const promisesOK = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+const promisesNOK = [Promise.resolve(1), Promise.resolve(2), Promise.reject(3)];
 
-promiseAll(promises)
-  .then(results => {
+promiseAll(promisesOK)
+  .then((results) => {
     console.log("All promises resolved:", results); // Expected: [1, 2, 3]
   })
-  .catch(error => {
+  .catch((error) => {
     console.error("At least one promise rejected:", error);
+  });
+
+promiseAll(promisesNOK)
+  .then((results) => {
+    console.log("All promises resolved:", results);
+  })
+  .catch((error) => {
+    console.error("At least one promise rejected:", error); // Expected: [3]
   });
 
 // Task 2: Implement promiseAllSettled Function
@@ -35,21 +55,43 @@ promiseAll(promises)
 // Implement a function called promiseAllSettled that takes an array of promises as an argument.
 // The function should return a new promise that resolves with an array of objects representing the settlement of each promise in the input array.
 // Each object in the resolved array should have properties status and value or reason. The status can be either 'fulfilled' or 'rejected', and value should hold the resolved value (if fulfilled) or reason should hold the rejection reason (if rejected).
-// Example
-// const promises = [
-//   Promise.resolve(1),
-//   Promise.reject("Error occurred"),
-//   Promise.resolve(3)
-// ];
 
-// promiseAllSettled(promises)
-//   .then(results => {
-//     console.log("All promises settled:", results);
-//     // Expected: [{ status: 'fulfilled', value: 1 },
-//     //            { status: 'rejected', reason: 'Error occurred' },
-//     //            { status: 'fulfilled', value: 3 }]
-//   });
-// ​
+function promiseAllSettled(arr) {
+  return new Promise((resolve) => {
+    let completed = 0;
+    let settledArr = [];
+    arr.forEach((promise, index) => {
+      promise
+        .then((value) => {
+          settledArr[index] = { status: "fulfilled", value };
+        })
+        .catch((reason) => {
+          settledArr[index] = { status: "rejected", reason };
+        })
+        .finally(() => {
+          completed++;
+          if (completed === arr.length) {
+            resolve(settledArr);
+          }
+        });
+    });
+  });
+}
+
+// Example
+const promises = [
+  Promise.resolve(1),
+  Promise.reject("Error occurred"),
+  Promise.resolve(3),
+];
+
+promiseAllSettled(promises).then((results) => {
+  console.log("All promises settled:", results);
+  // Expected: [{ status: 'fulfilled', value: 1 },
+  //            { status: 'rejected', reason: 'Error occurred' },
+  //            { status: 'fulfilled', value: 3 }]
+});
+
 // Task 3: Implement Chaining of Promises as a Separate Function
 // Your task is to implement a function called chainPromises that facilitates chaining of promises. The function should accept an array of functions that return promises and execute them sequentially.
 // Instructions
@@ -57,29 +99,42 @@ promiseAll(promises)
 // Each function in the array should return a promise.
 // The chainPromises function should execute the functions sequentially, chaining the promises together.
 // The returned promise should resolve with the value of the last resolved promise or reject with the reason of the first rejected promise.
+
+function chainPromises(arr) {
+  return new Promise((resolve, reject) => {
+    let result = Promise.resolve();
+
+    arr.forEach((func) => {
+      result = result.then(func);
+    });
+
+    result.then(resolve).catch(reject);
+  });
+}
+
 // Example
-// function asyncFunction1() {
-//   return Promise.resolve("Result from asyncFunction1");
-// }
+function asyncFunction1() {
+  return Promise.resolve("Result from asyncFunction1");
+}
 
-// function asyncFunction2(data) {
-//   return Promise.resolve(data + " - Result from asyncFunction2");
-// }
+function asyncFunction2(data) {
+  return Promise.resolve(data + " - Result from asyncFunction2");
+}
 
-// function asyncFunction3(data) {
-//   return Promise.resolve(data + " - Result from asyncFunction3");
-// }
+function asyncFunction3(data) {
+  return Promise.resolve(data + " - Result from asyncFunction3");
+}
 
-// const functionsArray = [asyncFunction1, asyncFunction2, asyncFunction3];
+const functionsArray = [asyncFunction1, asyncFunction2, asyncFunction3];
 
-// chainPromises(functionsArray)
-//   .then(result => {
-//     console.log("Chained promise result:", result);
-//     // Expected: "Result from asyncFunction1 - Result from asyncFunction2 - Result from asyncFunction3"
-//   })
-//   .catch(error => {
-//     console.error("Chained promise error:", error);
-//   });
+chainPromises(functionsArray)
+  .then((result) => {
+    console.log("Chained promise result:", result);
+    // Expected: "Result from asyncFunction1 - Result from asyncFunction2 - Result from asyncFunction3"
+  })
+  .catch((error) => {
+    console.error("Chained promise error:", error);
+  });
 // ​
 // Task 4: Implement promisify Function
 // Your task is to implement a function called promisify that converts a callback-style function into a function that returns a promise.
@@ -87,23 +142,38 @@ promiseAll(promises)
 // Implement a function called promisify that takes a callback-style function as an argument.
 // The promisify function should return a new function that returns a promise.
 // The new function should execute the original callback-style function and resolve the promise with its result or reject the promise with any error encountered.
+
+function promisify(callback) {
+  return function (...args) {
+    return new Promise((resolve, reject) => {
+      callback(...args, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
+}
+
 // Example
-// function callbackStyleFunction(value, callback) {
-//   setTimeout(() => {
-//     if (value > 0) {
-//       callback(null, value * 2);
-//     } else {
-//       callback("Invalid value", null);
-//     }
-//   }, 1000);
-// }
+function callbackStyleFunction(value, callback) {
+  setTimeout(() => {
+    if (value > 0) {
+      callback(null, value * 2);
+    } else {
+      callback("Invalid value", null);
+    }
+  }, 1000);
+}
 
-// const promisedFunction = promisify(callbackStyleFunction);
+const promisedFunction = promisify(callbackStyleFunction);
 
-// promisedFunction(3)
-//   .then(result => {
-//     console.log("Promised function result:", result); // Expected: 6
-//   })
-//   .catch(error => {
-//     console.error("Promised function error:", error);
-//   });
+promisedFunction(3)
+  .then((result) => {
+    console.log("Promised function result:", result); // Expected: 6
+  })
+  .catch((error) => {
+    console.error("Promised function error:", error);
+  });
