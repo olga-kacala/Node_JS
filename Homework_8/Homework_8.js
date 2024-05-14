@@ -85,6 +85,7 @@ class Cart {
   constructor(user) {
     this.user = user;
     this.books = [];
+    this.discountedPrice = null;
   }
 
   /**
@@ -116,6 +117,13 @@ class Cart {
     }
   }
 
+  getBook(title) {
+    const book = this.books.find((book) => book.title === title);
+    console.log(
+      book ? `${book.title}, ${book.author}, ${book.ISBN}` : "book not detected"
+    );
+  }
+
   /**
    * Calculates the total price of all books in the cart.
    * @param {boolean} log - Whether to log the total price to the console.
@@ -123,14 +131,31 @@ class Cart {
    */
   totalPrice(log = true) {
     let total = 0;
-    this.books.forEach((element) => {
-      total += element.price;
-    });
+    if (this.discountedPrice !== null) {
+      // If discounted price is available, use it
+      total = this.discountedPrice;
+    } else {
+      // Calculate total price without discount
+      this.books.forEach((element) => {
+        total += element.price;
+      });
+    }
     if (log) {
       console.log(`Total price: ${total}`);
     } else {
       return total;
     }
+  }
+
+  /**
+   * Apply discount to the total price of the cart.
+   * @param {number} percentage - The percentage of discount to apply.
+   * @returns {number} - The discounted total price of the cart.
+   */
+  discount(percentage) {
+    const totalPrice = this.totalPrice(false);
+    this.discountedPrice = totalPrice * ((100 - percentage) / 100);
+    return this.discountedPrice;
   }
 }
 
@@ -180,7 +205,7 @@ const book1 = new FictionBook(
   10,
   5,
   "Classic"
-); 
+);
 
 // Creating a non-fiction book "To Kill a Mockingbird"
 const book2 = new NonFictionBook(
@@ -193,7 +218,7 @@ const book2 = new NonFictionBook(
 );
 
 // Creating a generic book "I am boring"
-const book3 = new Book("I am boring", "Anna May", "6680061120084", 1200, 3000); 
+const book3 = new Book("I am boring", "Anna May", "6680061120084", 1200, 3000);
 
 // User 1 interaction
 const cart1 = new Cart(user1); // Creating a cart for user John Doe
@@ -220,3 +245,16 @@ order2.userOrder(); // Place order for User 2
 //Changing the order by adding a book
 cart2.addBook(book3); // Add "I am boring" to cart
 order2.userOrder(); // Rendering order details
+
+// Retrieve the book "I am boring" from cart1
+cart1.getBook("I am boring");
+
+// Retrieve the book "I am boring" from cart2
+cart2.getBook("I am boring");
+
+// Apply a 50% discount to the total price of cart2
+const discount50per = cart2.discount(50);
+console.log(discount50per); // Log the discounted total price
+
+// Display the order details for order2 after a discount
+order2.userOrder();
