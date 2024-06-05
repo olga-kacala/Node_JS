@@ -4,5 +4,8 @@
   },
   "devDependencies": {
     "jest": "^29.7.0"
-  }
+  },
+  
+  "example": {"name": "John", "age": 30, "city": "New York"}
+  
 }
