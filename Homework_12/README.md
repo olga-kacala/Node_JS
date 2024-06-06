@@ -36,4 +36,4 @@ The War Simulation Game is a strategic game where a human player competes agains
 
 ## Base URL
 
-http://localhost:3000/api/v1
+`http://localhost:3000/api/v1`
