@@ -1,17 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path= require('path');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'client/build')));
-app.get('*', (req, res)=>{
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
-})
 
-let games = []; // In-memory game storage for simplicity
+// In-memory game storage for simplicity
+let games = [{
+    status:'hello'
+}];
 
 // Endpoint: Start Game
 app.post('/api/v1/start-game', (req, res) => {
@@ -24,8 +23,7 @@ app.post('/api/v1/start-game', (req, res) => {
 
 // Endpoint: Get Game Status
 app.get('/api/v1/game-status', (req, res) => {
-  const { gameId } = req.query;
-  const game = games.find(g => g.gameId === gameId);
+  const game = games[0]; // Fetch the first game in the array for testing
   if (game) {
     res.json(game);
   } else {
@@ -97,6 +95,12 @@ app.get('/api/v1/battle-results', (req, res) => {
   } else {
     res.status(404).json({ message: 'Game not found' });
   }
+});
+
+// Serve React App
+app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
 });
 
 app.listen(PORT, () => {

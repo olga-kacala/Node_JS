@@ -6,7 +6,7 @@ export const GameStatus = () => {
   useEffect(() => {
     const fetchGameStatus = async () => {
       try {
-        const response = await fetch('/api/v1/game-status?gameId=yourGameId');
+        const response = await fetch('/api/v1/game-status');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -21,7 +21,7 @@ export const GameStatus = () => {
   }, []);
 
   if (!gameStatus) {
-    return <div>Loading...</div>;
+    return <div>no status</div>;
   }
 
   return (
