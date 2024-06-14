@@ -42,5 +42,36 @@ rev2prezero += "0"
     return sum.leftover + sum.digits.join('');
 }
 const summary = (a,c)=> a+c;
-const ok = string_plus(str1, str2);
-console.log(ok);
+// const ok = string_plus(str1, str2);
+// console.log(ok);
+
+
+// String.minus(string): This function should take another string as input and return the result of subtracting the second string from the first string. Note that the first parameter will always be greater than the second parameter.
+
+const StringMinus = (str1, str2) => {
+    const maxLength = str1.length > str2.length ? str1.length : str2.length;
+    str1 = str1.padStart(maxLength,"0");
+    str2 = str2.padStart(maxLength,"0");
+    
+    let borrow = 0;
+    result="";
+
+    for (let i=maxLength-1; i>=0; i--){
+const digit1 = str1[i].charCodeAt(0) - "0".charCodeAt(0);
+const digit2 = str2[i].charCodeAt(0) - "0".charCodeAt(0);
+let diff = digit1 - digit2 - borrow;
+
+if(diff <0){
+    borrow=1;
+    diff +=10
+}
+let charDiff  = String.fromCharCode(diff + '0'.charCodeAt(0))
+result = charDiff + result
+
+    }
+    
+    result = result.replace(/^0+/, "");
+    return result || '0'
+}
+
+console.log(StringMinus(str1, str2))

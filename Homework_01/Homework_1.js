@@ -57,6 +57,9 @@ function stringMinus(str1, str2) {
     const digit2 = str2[i];
 
     // Subtract the digits and borrow
+
+    //digit1.charCodeAt(0) - "0".charCodeAt(0): This calculates the numeric value of digit1. For instance, if digit1 is "5", this will be 53 - 48 (for 0) = 5.
+
     let diff =
       digit1.charCodeAt(0) -
       "0".charCodeAt(0) -
