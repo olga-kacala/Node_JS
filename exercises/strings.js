@@ -105,6 +105,19 @@ const addValues = (x,y) => {
   const typeOfX = typeof x;
   const typeOfY = typeof y;
  
+  if(Array.isArray(x) && Array.isArray(y)){
+    if(x.length !== y.length){
+      throw new Error ("nok")
+    } 
+      const newArr = [];
+      for (let i =0; i<x.length; i++){
+        newArr.push(x[i]+y[i])
+      }
+      return newArr
+    
+  } else if (typeOfX === "object" && typeOfY === "object"){
+    return this.deepMergeWithAddition(x,y)
+  }
   if(typeOfX === typeOfY){
     if(typeOfX === "number" || 
       typeOfX === "bigInt" ||
@@ -117,4 +130,4 @@ const addValues = (x,y) => {
   }
 
 }
-console.log(addValues("1","2"))
+console.log(addValues([1,2,3],[1,1,"1"]))
