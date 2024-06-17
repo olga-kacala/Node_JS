@@ -36,7 +36,7 @@ const HW3 = {
   // },
 
   getWordsOfText: function (text) {
-    return text.replace(/[^\w\s]/g, "").split(" ");
+    return text.replace(/[^\w\s]/g, "").toLowerCase().split(" ");
   },
 
   filterUniqueValues: function (values) {

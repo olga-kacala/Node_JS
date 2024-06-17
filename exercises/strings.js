@@ -157,5 +157,117 @@ function pure3(products) {
   }
   return sum;
 }
-console.log(pure2(pr));
-console.log(pure3(pr));
+// console.log(pure2(pr));
+// console.log(pure3(pr));
+
+// Implement a function called getFullName that takes a person object with firstName and lastName properties. The function should return the person's full name in the format "FirstName LastName".
+
+const person = { firstName: "Ola", lastName: "Ka" };
+
+function getFullName({ firstName, lastName }) {
+  return `${firstName} ${lastName}`;
+}
+
+// console.log(getFullName(person));
+
+// Create a function called filterUniqueWords that takes a string of text and returns an array of unique words, sorted in alphabetical order, without using explicit loops. Use function composition and point-free style.
+
+function getWord(string) {
+  return string.toLowerCase().split(" ");
+}
+function filter(arr) {
+  return [...new Set(arr)];
+}
+function sort(arr) {
+  return arr.sort();
+}
+
+function result(text) {
+  return sort(filter(getWord(text)));
+}
+
+const string = "Zosia ma bota ma ma";
+// console.log(result(string));
+
+// Implement a function called getAverageGrade that takes an array of student objects, each containing a name and grades property. The function should return the average grade of all students, without modifying the original array or its items. Use function composition and point-free style.
+
+const students = [
+  { name: "Ala", grades: [1, 5] },
+  { name: "Tom", grades: [1, 1] },
+  { name: "Ola", grades: [2, 2] },
+];
+
+function getAvg(arr) {
+  return (
+    arr
+      .map((student) => student.grades)
+      .flat()
+      .reduce((sum, grade) => sum + grade, 0) /
+    arr.map((student) => student.grades).flat().length
+  );
+}
+// console.log(getAvg(students));
+
+// Task 3: Closures and Higher-Order Functions
+
+// Create a function called createCounter that returns a closure. The closure should be a counter function that increments the count on each call and returns the updated count. Each closure should have its own independent count.
+
+function createCounter() {
+  let counter = 1;
+  const inner = () => {
+    return counter++;
+  };
+  return inner;
+}
+// Creating independent counters
+const counter1 = createCounter();
+const counter2 = createCounter();
+
+// console.log(counter1()); // Output: 1
+// console.log(counter1()); // Output: 2
+// console.log(counter2()); // Output: 1
+// console.log(counter2()); // Output: 2
+// console.log(counter1()); // Output: 3
+// console.log(counter2()); // Output: 3
+
+// Implement a higher-order function called repeatFunction that takes a function and a number as arguments. The function should return a new function that invokes the original function multiple times based on the provided number. If the number is negative, the new function should invoke the original function indefinitely until stopped.
+function repeatFunction(fun, num) {
+  if (num >= 0) {
+    for (let i = 0; i < num; i++) {
+      fun();
+    }
+  } else {
+    while (true) {
+      fun();
+    }
+  }
+}
+
+// Task 4: Recursion and Tail Call Optimization
+
+// Implement a recursive function called calculateFactorial that calculates the factorial of a given number. Optimize the function to use tail call optimization to avoid stack overflow for large input numbers.
+function calculateFactorial (num, acc =1){
+  if(num<=1){
+    return acc
+  } 
+   return calculateFactorial(num-1, acc *num)
+  
+}
+// console.log(calculateFactorial(3))
+// Create a recursive function called power that takes a base and an exponent as arguments. The function should calculate the power of the base to the exponent using recursion.
+function power (num, ex){
+  if(ex ===0){
+    return 1
+  } else {
+    return num * power(num, ex -1)
+  } 
+
+}
+
+console.log(power(2,3))
+
+// Task 5: Lazy Evaluation and Generators (*do not use yield)
+
+// Implement a lazy evaluation function called lazyMap that takes an array and a mapping function. The function should return a lazy generator that applies the mapping function to each element of the array one at a time.
+
+// Create a lazy generator function called fibonacciGenerator that generates Fibonacci numbers one at a time using lazy evaluation.

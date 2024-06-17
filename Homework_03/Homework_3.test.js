@@ -82,13 +82,13 @@ describe("Task 2: Function Composition and Point-Free Style", () => {
     expect(HW3.getFullName(person)).toEqual("Julia Newman");
   });
   test("filterUniqueWords", () => {
-    const text = "create a function called a filterUniqueWords";
+    const text = "Create a function called a filterUniqueWords";
 
     expect(HW3.filterUniqueWords(text)).toEqual([
       "a",
       "called",
       "create",
-      "filterUniqueWords",
+      "filteruniquewords",
       "function",
     ]);
   });
