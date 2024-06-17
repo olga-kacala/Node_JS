@@ -95,39 +95,67 @@ const stringMultipy = (str1, str2) => {
 
 // console.log(stringMultipy(str1, str2));
 
-
 //   String.divide(string): This function should take another string as input and return the result of dividing the first string by the second string. Division should only result in an integer value.
 
 // addValues: Accepts two arguments of any type and performs the appropriate addition operation based on the types of the arguments. The function should return the result of the addition. If the addition is not possible, it should throw an error.
 
-const addValues = (x,y) => {
-
+const addValues = (x, y) => {
   const typeOfX = typeof x;
   const typeOfY = typeof y;
- 
-  if(Array.isArray(x) && Array.isArray(y)){
-    if(x.length !== y.length){
-      throw new Error ("nok")
-    } 
-      const newArr = [];
-      for (let i =0; i<x.length; i++){
-        newArr.push(x[i]+y[i])
-      }
-      return newArr
-    
-  } else if (typeOfX === "object" && typeOfY === "object"){
-    return this.deepMergeWithAddition(x,y)
+
+  if (Array.isArray(x) && Array.isArray(y)) {
+    if (x.length !== y.length) {
+      throw new Error("nok");
+    }
+    const newArr = [];
+    for (let i = 0; i < x.length; i++) {
+      newArr.push(x[i] + y[i]);
+    }
+    return newArr;
+  } else if (typeOfX === "object" && typeOfY === "object") {
+    return this.deepMergeWithAddition(x, y);
   }
-  if(typeOfX === typeOfY){
-    if(typeOfX === "number" || 
+  if (typeOfX === typeOfY) {
+    if (
+      typeOfX === "number" ||
       typeOfX === "bigInt" ||
       typeOfX === "boolean" ||
-      typeOfX === "string") {
-        return x + y
-      }
+      typeOfX === "string"
+    ) {
+      return x + y;
+    }
   } else {
-    throw new Error ("not possible")
+    throw new Error("not possible");
   }
+};
+// console.log(addValues([1,2,3],[1,1,"1"]))
 
+// Implement a pure function called calculateDiscountedPrice that takes an array of products and a discount percentage as arguments. The function should return a new array of products with discounted prices based on the given percentage, without modifying the original products.
+
+function pure(products, discount) {
+  return products.map((item) => {
+    const disc = (item.price * discount) / 100;
+    return { ...item, price: disc };
+  });
 }
-console.log(addValues([1,2,3],[1,1,"1"]))
+const pr = [
+  { name: "Product 1", price: 100 },
+  { name: "Product 2", price: 50 },
+  { name: "Product 3", price: 200 },
+];
+const dis = 50;
+// console.log(pure(pr, dis));
+
+// Create a pure function called calculateTotalPrice that takes an array of products as an argument. The function should return the total price of all products, without modifying the original array or its items.
+function pure2(products) {
+  return products.reduce((acc, curr) => acc + curr.price, 0);
+}
+function pure3(products) {
+  let sum = 0;
+  for (let i = 0; i < products.length; i++) {
+    sum += products[i].price;
+  }
+  return sum;
+}
+console.log(pure2(pr));
+console.log(pure3(pr));
