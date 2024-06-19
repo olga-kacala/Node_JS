@@ -113,6 +113,22 @@ function getArrayIntersection(arr1, arr2) {
   return result;
 }
 
+// funcion done without using Set
+// function getArrayUnion (arr1, arr2){
+//   let newArr = [];
+//   arr1.forEach(e => {
+//     if(!newArr.includes(e)){
+//       newArr.push(e)
+//     }
+//   })
+//   arr2.forEach(e=>{
+//     if(!newArr.includes(e)){
+//       newArr.push(e)
+//     }
+//   })
+//   return newArr
+// }
+
 function getArrayUnion(arr1, arr2) {
   const combinedArray = arr1.concat(arr2);
   const uniqueArray = [...new Set(combinedArray)];
@@ -122,8 +138,8 @@ function getArrayUnion(arr1, arr2) {
 let array1 = [1, 2, 3, 4, 5, 2, "a"];
 let array2 = ["a", "b", "c", 2, "d", "c", 3];
 
-console.log(getArrayIntersection(array1, array2));
-console.log(getArrayUnion(array1, array2));
+// console.log(getArrayIntersection(array1, array2));
+// console.log(getArrayUnion(array1, array2));
 
 // Task 5: Array Performance Analysis
 // Implement a function called measureArrayPerformance that takes a function and an array as arguments. The measureArrayPerformance function should execute the provided function with the given array as input and measure the execution time.
