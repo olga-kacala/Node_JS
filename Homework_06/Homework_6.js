@@ -26,7 +26,7 @@ const introduction = "intro";
 const localizedGreeting = localize`${greeting}`(language);
 const localizedIntroduction = localize`${introduction}`(language);
 
-// console.log(localizedGreeting); // Expected: "Bonjour" (for language "fr")
+console.log(localizedGreeting); // Expected: "Bonjour" (for language "fr")
 // console.log(localizedIntroduction); // Expected: "Bienvenue sur notre site web" (for language "fr")
 
 // Task 2: Advanced Tagged Template
@@ -235,16 +235,16 @@ function challengeCurry(func, arity = func.length) {
   };
 }
 
-`// Example usage with placeholder
-function multiply(a, b, c) {
-  return a * b * c;
-}
+// `// Example usage with placeholder
+// function multiply(a, b, c) {
+//   return a * b * c;
+// }
 
-let step1 = challengeCurry(multiply);
-let step2 = step1('_');
-let addMissingArgs = step2(4);
-let step3 = addMissingArgs(2)
-let result2 = step3(3)
-// Returns the final result: 2 * 3 * 4 = 24
-console.log("Result:", result2); // Expected: 24`
-`
+// let step1 = challengeCurry(multiply);
+// let step2 = step1('_');
+// let addMissingArgs = step2(4);
+// let step3 = addMissingArgs(2)
+// let result2 = step3(3)
+// // Returns the final result: 2 * 3 * 4 = 24
+// console.log("Result:", result2); // Expected: 24`
+// `

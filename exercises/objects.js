@@ -260,4 +260,43 @@ let array1 = [1, 2, 3, 4, 5, 2, "a"];
 let array2 = ["a", "b", "c", 2, "d", "c", 3];
 
 // console.log(getArrayIntersection(array1, array2));
-console.log(getArrayUnion(array1, array2));
+// console.log(getArrayUnion(array1, array2));
+
+function give70by30 (a,b) {
+  let randomNumber = Math.random();
+  if(randomNumber>=0.7){
+    return a
+  } else {return b}
+}
+
+// You are working on a localization library that uses tagged templates to handle multiple languages. Implement a function called `localize` that acts as a quasi-tagged template. The function should take a template string and an object containing language-specific translations. It should replace placeholders in the template string with the corresponding translations from the provided object.
+
+const translations = {
+  en: {
+    greet: "Hello",
+    intro: "Welcome to our website",
+  },
+  fr: {
+    greet: "Bonjour",
+    intro: "Bienvenue sur notre site web",
+  },
+};
+
+function localize (template, ...obj){
+return function (language){
+  const translation = translations[language];
+  return obj.map((key)=>translation[key]).join("");
+}
+
+}
+
+const language = "fr"; // Change to "en" for English
+const greeting = "greet";
+const introduction = "intro";
+
+const localizedGreeting = localize`123${greeting}4556`(language);
+
+
+console.log(localizedGreeting); // Expected: "Bonjour" (for language "fr")
+
+console.log(localize`123${introduction}`(language)); // Expected: "Bienvenue sur notre site web" (for language "fr")
