@@ -269,5 +269,29 @@ console.log(power(2,3))
 // Task 5: Lazy Evaluation and Generators (*do not use yield)
 
 // Implement a lazy evaluation function called lazyMap that takes an array and a mapping function. The function should return a lazy generator that applies the mapping function to each element of the array one at a time.
+function lazyMap (arr,fun){
+let index = 0;
+return {
+  next:function (){
+    if(index <arr.length){
+      return {value: fun(arr[index++]), done:false}
+    } else {return {done:true}}
+  }
+}
+
+}
 
 // Create a lazy generator function called fibonacciGenerator that generates Fibonacci numbers one at a time using lazy evaluation.
+
+function fibonacciGenerator (){
+  let prev = 0;
+  let current = 1;
+  return {
+    next: function (){
+      const value = current;
+      current= prev+current;
+      prev =value;
+      return{value:value, done:false}
+    }
+  }
+}
