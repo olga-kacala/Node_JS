@@ -295,3 +295,16 @@ function fibonacciGenerator (){
     }
   }
 }
+
+let nameA = "Olga";
+let ageB = 35;
+
+function Tag(strings, name, age){
+
+  let one = strings[0];
+  let two = strings[1];
+  let three = strings[2];
+return `${one}${name}${two}${age}${three}`
+}
+
+console.log(Tag`Hello ${nameA} is ${ageB} old`)

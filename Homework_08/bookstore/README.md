@@ -22,6 +22,7 @@ bookstore/
 ## Classes
 
 ### Book Class
+
 Represents individual books in the bookstore.
 
 - Properties:
@@ -46,6 +47,7 @@ Represents individual books in the bookstore.
   - `setAvailabilityStatus(status)`: Updates the availability status of the book.
 
 ### FictionBook Class
+
 Represents a fiction book, which is a subtype of `Book`.
 
 - Properties:
@@ -56,6 +58,7 @@ Represents a fiction book, which is a subtype of `Book`.
   - Inherits all methods from `Book`.
 
 ### NonFictionBook Class
+
 Represents a non-fiction book, which is a subtype of `Book`.
 
 - Properties:
@@ -67,6 +70,7 @@ Represents a non-fiction book, which is a subtype of `Book`.
 
 
 ### User Class
+
 Represents users of the bookstore.
 
 - Properties:
@@ -84,6 +88,7 @@ Represents users of the bookstore.
 
 
 ### Cart Class
+
 Simulates a shopping cart for users.
 
 - Properties:
@@ -96,6 +101,7 @@ Simulates a shopping cart for users.
   - `calculateTotal()`: Calculates the total price of the books in the cart.
 
 ### Order Class
+
 Represents a user's order.
 
 - Properties:
