@@ -119,3 +119,59 @@ class Graph {
 }
 
 // 5. **Linked List**: Implement a class for a singly linked list data structure. Include methods for inserting nodes, deleting nodes, and searching for a node.
+class Node {
+  constructor(){
+    this.value = value;
+    this.next = null
+  }
+}
+class LinkedList {
+  constructor(){
+    this.head = null;
+    this.tail = null;
+    this.lenght = 0;
+  }
+
+
+addNode (value){
+  const newNode = new Node; 
+if(!this.head) {
+this.head = newNode;
+this.tail = newNode
+} else {
+  this.tail.next = newNode
+  this.tail = newNode
+}
+this.length ++
+}
+
+deletes (value){
+  if(!this.head){
+    return false
+  } 
+  let current = this.head;
+  while(current.next && current.naxt.value !== value){
+    current = current.next
+  }
+
+  if(current.next){
+
+  }
+}
+
+search (value){
+  let current = this.head;
+  while(current.value !== value){
+    current = current.next
+  }
+  return current
+}
+}
+
+class MinMaxStack {
+  constructor(){
+    this.minStack = [];
+    this.maxStack = [];
+    this.items = [];
+  }
+}

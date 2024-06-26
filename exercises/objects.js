@@ -458,13 +458,15 @@ const promisesOK = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
 // arr[4] = 4;
 // console.log(arr.at(-1));
 
-const arr1= [1,2,3,4,5]
-console.log(arr1.pop());
-console.log(arr1.shift());
-console.log(arr1.unshift(10));
-console.log(arr1);
-console.log(arr1.sort((a,b)=> b-a))
+// const arr1= [1,2,3,4,5]
+// console.log(arr1.pop());
+// console.log(arr1.shift());
+// console.log(arr1.unshift(10));
+// console.log(arr1);
+// console.log(arr1.sort((a,b)=> b-a))
 
-console.log([]+1)
-console.log([1,2]+3)
-console.log(["hello"]+1)
+// console.log([]+1)
+// console.log([1,2]+3)
+// console.log(["hello"]+1)
+let arr=[["a", "b", "c"],[1,2,3]];
+console.log(arr[0][1])
