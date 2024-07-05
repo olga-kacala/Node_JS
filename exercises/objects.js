@@ -468,5 +468,71 @@ const promisesOK = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
 // console.log([]+1)
 // console.log([1,2]+3)
 // console.log(["hello"]+1)
-let arr=[["a", "b", "c"],[1,2,3]];
-console.log(arr[0][1])
+// let arr=[["a", "b", "c"],[1,2,3]];
+// console.log(arr[0][1])
+
+// let obj1 = {
+//  age: 100,
+
+// };
+
+// Object.defineProperty(obj1, "age", {
+//   getAge (){
+//     return this.age
+//    },
+
+//    setAge(value){
+//     return this.age = value
+
+//    },
+
+//   enumerable:true,
+//   configurable:true
+// });
+
+// console.log(obj1.age)
+// obj1.age = 20;
+// console.log(obj1.age)
+
+// function curry (a){
+//   return function(b){
+//     return function (c){
+// return a + b +c
+//     }
+//   }
+// }
+// let tree = curry(1)(2)
+// console.log(tree(3))
+
+// function composition (x){
+//   return x+1
+// }
+
+// function multi (x){
+//   return x*2
+// }
+
+// let result = multi(composition(5))
+// console.log(result)
+
+// const numbers = [1, 2, 3, 4];
+// const doubled = numbers.map(n => n * 2);
+// console.log(doubled); // Output: [2, 4, 6, 8]
+// console.log(numbers)
+// let fil = numbers.filter(e=> e%2 ===0)
+// console.log(fil)
+
+// function greet(name) {
+//   return `Hello, ${name}!`;
+// }
+
+// function callWithRandomName(fn) {
+//   const names = ["Alice", "Bob", "Charlie"];
+//   const randomName = names[Math.floor(Math.random() * names.length)];
+//   return fn(randomName);
+// }
+
+// console.log(callWithRandomName(greet));
+// // Output might be: "Hello, Alice!" or "Hello, Bob!" or "Hello, Charlie!"
+// console.log(typeof(greet))
+
