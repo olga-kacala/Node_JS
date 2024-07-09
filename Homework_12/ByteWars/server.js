@@ -13,10 +13,6 @@ const secret = 'your-256-bit-secret';
 
 app.use(bodyParser.json());
 
-// In-memory game storage for simplicity
-let games = [{
-    status:'hello'
-}];
 
 
 // Register User
@@ -184,6 +180,23 @@ app.get('/api/v1/battle-results', (req, res) => {
       return res.status(404).json({ message: 'Game or units not found', error: err });
     }
     res.json({ gameId, results: units });
+  });
+});
+
+
+// Endpoint: End Game
+app.post('/api/v1/end-game', (req, res) => {
+  const { gameId } = req.body;
+  if (!gameId) {
+    return res.status(400).json({ message: 'gameId is required' });
+  }
+
+  const query = 'UPDATE games SET status = ? WHERE gameId = ?';
+  db.run(query, ['ended', gameId], function (err) {
+    if (err || this.changes === 0) {
+      return res.status(500).json({ message: 'Failed to end game', error: err });
+    }
+    res.json({ message: 'Game ended successfully' });
   });
 });
 

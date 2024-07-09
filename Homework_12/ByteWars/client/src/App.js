@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { GameStatus } from './components/GameStatus';
+import { NewGame } from './components/NewGame';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -34,17 +35,41 @@ function App() {
     setIsLoggedIn(false);
   };
 
+  const handleRegistration = async () => {
+    try {
+      const response = await fetch('/api/v1/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
+      const data = await response.json();
+      console.log('Registration successful:', data);
+      handleLogin();
+    } catch (error) {
+      console.error('Error registering:', error);
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Welcome to new Byte Wars: AI vs Humans</h1>
+        <h1>Welcome to Byte Wars: AI vs Humans</h1>
         {isLoggedIn ? (
           <>
+          <div>Hello, {username}</div>
             <button onClick={handleLogout}>Logout</button>
-            <GameStatus />
+            {/* <GameStatus /> */}
+            <NewGame/>
           </>
         ) : (
-          <form onSubmit={handleLogin}>
+          <form>
             <input
               type="text"
               placeholder="Username"
@@ -59,7 +84,10 @@ function App() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button type="submit">Login</button>
+            <button type="button" onClick={handleLogin}>Login</button>
+            <button type="button" onClick={handleRegistration}>
+              Register
+            </button>
           </form>
         )}
       </header>
