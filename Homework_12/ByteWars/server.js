@@ -65,13 +65,13 @@ app.use('/api/v1', (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: 'Authorization token required' });
   }
-
-  const isValid = jwt.verify(token, secret);
-  if (!isValid) {
-    return res.status(401).json({ message: 'Invalid token' });
-  }
-
-  next();
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+    req.userId = decoded.userId; 
+    next();
+  });
 });
 
 // Endpoint: Start Game

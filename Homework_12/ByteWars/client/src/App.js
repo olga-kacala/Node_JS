@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-import { GameStatus } from './components/GameStatus';
 import { NewGame } from './components/NewGame';
 
 function App() {
@@ -65,7 +64,7 @@ function App() {
           <>
           <div>Hello, {username}</div>
             <button onClick={handleLogout}>Logout</button>
-            {/* <GameStatus /> */}
+            
             <NewGame/>
           </>
         ) : (
