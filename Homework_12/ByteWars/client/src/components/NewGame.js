@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ImgHuman from "../assets/img/human.png";
 import ImgRobot from "../assets/img/robot.png";
 import { GameStatus } from "./GameStatus";
@@ -6,55 +6,64 @@ import { GameStatus } from "./GameStatus";
 export const NewGame = () => {
   const [userRobot, setUserRobot] = useState(false);
   const [userHuman, setUserHuman] = useState(false);
-  const [gameId, setGameId] = useState(null);
+  
 
-  useEffect(() => {
-    console.log("GameId updated:", gameId);
-  }, [gameId]);
-
-  const handleHuman = () => {
+  const handleHuman = async () => {
+    console.log("Human selected");
     setUserHuman(true);
-    startGame('human');
+    await startGame('human');
   };
 
-  const handleRobot = () => {
+  const handleRobot = async () => {
+    console.log("Robot selected");
     setUserRobot(true);
-    startGame('robot');
+    await startGame('robot');
   };
 
   const startGame = async (side) => {
-    console.log("1", gameId);
+    console.log("Starting game...");
     try {
-      console.log("2", gameId);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
       const response = await fetch('/api/v1/start-game', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` 
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ side })
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to start game');
       }
 
       const data = await response.json();
-      setGameId(data.gameId);
-      console.log("3", data.gameId);
+      console.log('Game started:', data);
+      
+     
     } catch (error) {
       console.error('Error starting game:', error);
     }
-    console.log("4", gameId);
   };
+
+  const handleMove = ()=>{
+    console.log("Attack");
+  }
+  
 
   return (
     <div>
       {(userHuman || userRobot) ? (
         <div>
           <p>Let's play as {userHuman ? 'human' : 'robot'}</p>
-          {gameId && <GameStatus gameId={gameId} />}
+          <button type="button" onClick={handleMove}>Make move</button>
+          <GameStatus/>
         </div>
+       
       ) : (
         <div>
           <h2>Choose your character:</h2>
