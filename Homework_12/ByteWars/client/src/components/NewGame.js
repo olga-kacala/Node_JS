@@ -6,64 +6,59 @@ import { GameStatus } from "./GameStatus";
 export const NewGame = () => {
   const [userRobot, setUserRobot] = useState(false);
   const [userHuman, setUserHuman] = useState(false);
-  
+  const [gameId, setGameId] = useState("");
 
   const handleHuman = async () => {
-    console.log("Human selected");
     setUserHuman(true);
-    await startGame('human');
+    await startGame("human");
   };
 
   const handleRobot = async () => {
-    console.log("Robot selected");
     setUserRobot(true);
-    await startGame('robot');
+    await startGame("robot");
   };
 
   const startGame = async (side) => {
-    console.log("Starting game...");
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error('No token found');
+        throw new Error("No token found");
       }
-
-      const response = await fetch('/api/v1/start-game', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/api/v1/startGame", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ side })
+        body: JSON.stringify({ side }),
       });
-
       if (!response.ok) {
-        throw new Error('Failed to start game');
+        throw new Error("Failed to start game");
       }
 
       const data = await response.json();
-      console.log('Game started:', data);
-      
+      setGameId(data.gameId);
+      console.log("Game started:", data);
      
     } catch (error) {
-      console.error('Error starting game:', error);
+      console.error("Error starting game:", error);
     }
   };
 
-  const handleMove = ()=>{
+  const handleMove = () => {
     console.log("Attack");
-  }
-  
+  };
 
   return (
     <div>
-      {(userHuman || userRobot) ? (
+      {userHuman || userRobot ? (
         <div>
-          <p>Let's play as {userHuman ? 'human' : 'robot'}</p>
-          <button type="button" onClick={handleMove}>Make move</button>
-          <GameStatus/>
+          <p>Let's play as {userHuman ? "human" : "robot"}</p>
+          <button type="button" onClick={handleMove}>
+            Make move
+          </button>
+          <GameStatus gameId={gameId} />
         </div>
-       
       ) : (
         <div>
           <h2>Choose your character:</h2>

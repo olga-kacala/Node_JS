@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 
-export const GameStatus = () => {
+export const GameStatus = (gameId) => {
   const [gameStatus, setGameStatus] = useState(null);
-
  
     const fetchGameStatus = async () => {
+      console.log("fetch start1", gameId)
       try {
-        const response = await fetch(`/api/v1/game-status`, {
+      
+        console.log(localStorage.getItem('token'));
+        const response = await fetch("http://localhost:3000/api/v1/gameStatus", {
+          method: "POST",
           headers: {
+            "Content-Type": "application/json",
             'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+          },
+          body: JSON.stringify( {gameId} ),
         });
 
         if (!response.ok) {
@@ -18,17 +23,21 @@ export const GameStatus = () => {
 
         const data = await response.json();
         setGameStatus(data);
+        console.log("data", data)
+        console.log(gameStatus)
       } catch (error) {
         console.error('Error fetching game status:', error);
       }
-      console.log("game status")
+      
     };
 
   return (
     <div>
       <h1>Game Status</h1>
       <button onClick={fetchGameStatus}>Game Status</button>
-      <p>{gameStatus}</p>
+      <p>game status: {gameStatus}</p>
+     
+     
     </div>
   );
 };
