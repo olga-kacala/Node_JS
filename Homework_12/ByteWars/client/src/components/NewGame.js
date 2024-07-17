@@ -38,8 +38,6 @@ export const NewGame = () => {
 
       const data = await response.json();
       setGameId(data.gameId);
-      console.log("Game started:", data);
-     
     } catch (error) {
       console.error("Error starting game:", error);
     }

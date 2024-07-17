@@ -43,7 +43,6 @@ app.post('/api/v1/login', (req, res) => {
   if (!username || !password) {
     return res.status(400).json({ message: 'Username and password are required' });
   }
-
   const query = 'SELECT * FROM users WHERE username = ?';
   db.get(query, [username], (err, user) => {
     if (err || !user) {
@@ -80,8 +79,11 @@ app.post('/api/v1/startGame', (req, res) => {
 });
 
 // Endpoint: Get Game Status
-app.get('/api/v1/gameStatus', (req, res) => {
-  const { gameId } = req.query;
+app.post('/api/v1/gameStatus', (req, res) => {
+  const { gameId } = req.body; 
+  if (!gameId) {
+    return res.status(400).json({ message: 'Game ID is required' });
+  }
   const query = 'SELECT * FROM games WHERE gameId = ?';
   db.get(query, [gameId], (err, game) => {
     if (err || !game) {
