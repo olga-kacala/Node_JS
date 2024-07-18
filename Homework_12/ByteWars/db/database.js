@@ -14,7 +14,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Create tables if they don't exist: users, games, and units. 
+// Create tables if they don't exist: users and games.
 // db.serialize: This method ensures that the following SQL commands are executed in sequence
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS users (
@@ -27,17 +27,12 @@ db.serialize(() => {
     gameId TEXT PRIMARY KEY,
     status TEXT,
     side TEXT,
-    turn TEXT
+    turn TEXT, 
+    userHealth INTEGER,
+    opponentHealth INTEGER
   )`);
+  
 
-  db.run(`CREATE TABLE IF NOT EXISTS units (
-    unitId TEXT PRIMARY KEY,
-    gameId TEXT,
-    unitType TEXT,
-    position TEXT,
-    health INTEGER DEFAULT 100,
-    FOREIGN KEY (gameId) REFERENCES games(gameId)
-  )`);
 });
 
 module.exports = db;
