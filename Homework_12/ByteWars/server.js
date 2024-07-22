@@ -76,14 +76,18 @@ app.post("/api/v1/startGame", (req, res) => {
   }
 
   const gameId = `game-${Date.now()}`;
-  const query = "INSERT INTO games (gameId, status, side) VALUES (?, ?, ?)";
-  db.run(query, [gameId, "initialized", side], function (err) {
+  const status = 'initiaziled';
+  const turn = 0;
+  const userHealth = 100;
+  const opponentHealth = 100;
+  const query = "INSERT INTO games (gameId, status, side, turn, userHealth, opponentHealth) VALUES (?, ?, ?, ?, ?, ?)";
+  db.run(query, [gameId, status, side, turn, userHealth, opponentHealth], function (err) {
     if (err) {
       return res
         .status(500)
         .json({ message: "Game creation failed", error: err });
     }
-    res.json({ gameId, status: "initialized" });
+    res.json({ gameId, status });
   });
 });
 
@@ -102,6 +106,62 @@ app.post("/api/v1/gameStatus", (req, res) => {
   });
 });
 
+app.post("/api/v1/attack", (req, res) => {
+  const { gameId } = req.body;
+  if (!gameId) {
+    return res.status(400).json({ message: "Game ID is required" });
+  }
+  const query = "SELECT * FROM games WHERE gameId = ?";
+  db.get(query, [gameId], (err, game) => {
+    if (err || !game) {
+      return res.status(404).json({ message: "Game not found" });
+    }
+
+    // Check if the game is already finished
+    if (game.userHealth <= 0 || game.opponentHealth <= 0) {
+      return res.status(400).json({ message: "The game is already finished" });
+    }
+
+    const userAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
+    const newOpponentHealth = Math.max(game.opponentHealth - userAttackPower, 0);
+
+    const opponentAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
+    const newUserHealth = Math.max(game.userHealth - opponentAttackPower, 0); // Simulating opponent's attack
+
+    // Increment turn
+    const newTurn = game.turn + 1;
+
+    // Determine the game status
+    let gameStatus = "ongoing";
+    if (newUserHealth <= 0 && newOpponentHealth <= 0) {
+      gameStatus = "draw";
+    } else if (newUserHealth <= 0) {
+      gameStatus = "lost";
+    } else if (newOpponentHealth <= 0) {
+      gameStatus = "won";
+    }
+
+    db.run(
+      "UPDATE games SET userHealth = ?, opponentHealth = ?, status = ?, turn = ? WHERE gameId = ?",
+      [newUserHealth, newOpponentHealth, gameStatus, newTurn, gameId],
+      function (err) {
+        if (err) {
+          console.error("Error updating game health:", err);
+          return res.status(500).json({ message: "Error updating game health", error: err.message });
+        }
+        res.json({
+          message: "Attack successful",
+          userHealth: newUserHealth,
+          opponentHealth: newOpponentHealth,
+          turn: newTurn,
+          gameStatus: gameStatus,
+        });
+      }
+    );
+  });
+});
+
+
 // Middleware to verify JWT
 app.use("/api/v1", (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -114,66 +174,6 @@ app.use("/api/v1", (req, res, next) => {
     }
     req.userId = decoded.userId;
     next();
-  });
-});
-
-//Endpoint: attack
-app.post("/api/v1/attack", (req, res) => {
-  const { gameId } = req.body;
-  console.log("Attack endpoint hit with gameId:", gameId); // Log incoming request
-  if (!gameId) {
-    return res.status(400).json({ message: "Game ID is required" });
-  }
-
-  db.get("SELECT * FROM games WHERE gameId = ?", [gameId], (err, game) => {
-    if (err) {
-      console.error("Error fetching game:", err);
-      return res.status(500).json({ message: "Error fetching game", error: err.message });
-    }
-    if (!game) {
-      return res.status(404).json({ message: "Game not found" });
-    }
-    console.log("Fetched game:", game); // Log fetched game
-
-    const attackPower = Math.floor(Math.random() * (50 - 30 + 1)) + 30; // Random power between 30-50
-    const newOpponentHealth = Math.max(game.opponentHealth - attackPower, 0);
-    const newUserHealth = Math.max(game.userHealth - attackPower, 0); // Simulating opponent's attack
-
-    db.run(
-      "UPDATE games SET userHealth = ?, opponentHealth = ? WHERE gameId = ?",
-      [newUserHealth, newOpponentHealth, gameId],
-      function (err) {
-        if (err) {
-          console.error("Error updating game health:", err);
-          return res.status(500).json({ message: "Error updating game health", error: err.message });
-        }
-        console.log("Updated game health:", this.changes); // Log update result
-
-        res.json({
-          message: "Attack successful",
-          userHealth: newUserHealth,
-          opponentHealth: newOpponentHealth,
-        });
-      }
-    );
-  });
-});
-
-// Endpoint: End Game
-app.post("/api/v1/end-game", (req, res) => {
-  const { gameId } = req.body;
-  if (!gameId) {
-    return res.status(400).json({ message: "gameId is required" });
-  }
-
-  const query = "UPDATE games SET status = ? WHERE gameId = ?";
-  db.run(query, ["ended", gameId], function (err) {
-    if (err || this.changes === 0) {
-      return res
-        .status(500)
-        .json({ message: "Failed to end game", error: err });
-    }
-    res.json({ message: "Game ended successfully" });
   });
 });
 

@@ -46,29 +46,22 @@ export const NewGame = () => {
   };
 
   const handleAttack = async () => {
-    console.log("Attack initiated");
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("No token found");
-      }
-  
-      const response = await fetch("http://localhost:3000/api/v1/attack", {
+     const response = await fetch("http://localhost:3000/api/v1/attack", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ gameId }),
       });
   
-      console.log("Fetch response:", response); // Log response
       if (!response.ok) {
         throw new Error("Failed to make attack");
       }
   
       const data = await response.json();
-      console.log("Attack response data:", data); // Log response data
+      console.log("Attack response data:", data); 
       setUserHP(data.userHealth);
       setOpponentHP(data.opponentHealth);
     } catch (error) {
@@ -83,7 +76,7 @@ export const NewGame = () => {
         <div>
           <p>Let's play as {userHuman ? "human" : "robot"}</p>
           <button type="button" onClick={handleAttack}>
-            Make move
+            Attack!
           </button>
           <GameStatus gameId={gameId} />
           <div>user HP:{userHP}</div>

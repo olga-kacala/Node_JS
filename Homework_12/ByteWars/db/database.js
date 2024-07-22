@@ -27,7 +27,7 @@ db.serialize(() => {
     gameId TEXT PRIMARY KEY,
     status TEXT,
     side TEXT,
-    turn TEXT, 
+    turn INTEGER, 
     userHealth INTEGER,
     opponentHealth INTEGER
   )`);
