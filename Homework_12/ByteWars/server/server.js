@@ -123,7 +123,14 @@ app.post("/api/v1/attack", (req, res) => {
     }
 
     const userAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
-    const newOpponentHealth = Math.max(game.opponentHealth - userAttackPower, 0);
+    const newOpponentHealth = Math.max(game.opponentHealth - userAttackPower, 0); // User attack
+
+// Determine the game status after user attack
+let gameStatus = "ongoing";
+if (newOpponentHealth <= 0) {
+  gameStatus = "won";
+  
+}
 
     const opponentAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
     const newUserHealth = Math.max(game.userHealth - opponentAttackPower, 0); // Simulating opponent's attack
@@ -131,15 +138,10 @@ app.post("/api/v1/attack", (req, res) => {
     // Increment turn
     const newTurn = game.turn + 1;
 
-    // Determine the game status
-    let gameStatus = "ongoing";
-    if (newUserHealth <= 0 && newOpponentHealth <= 0) {
-      gameStatus = "draw";
-    } else if (newUserHealth <= 0) {
+    // Determine the game status after opponent attack
+   if (newUserHealth <= 0) {
       gameStatus = "lost";
-    } else if (newOpponentHealth <= 0) {
-      gameStatus = "won";
-    }
+   }
 
     db.run(
       "UPDATE games SET userHealth = ?, opponentHealth = ?, status = ?, turn = ? WHERE gameId = ?",
@@ -178,9 +180,9 @@ app.use("/api/v1", (req, res, next) => {
 });
 
 // Serve React App
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "../client/build")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 app.listen(PORT, () => {
