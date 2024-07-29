@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import classes from "./GameStatus.module.css";
 
 export const GameStatus = ({ gameId }) => {
   const [gameStatus, setGameStatus] = useState(null);
@@ -26,8 +27,7 @@ export const GameStatus = ({ gameId }) => {
   };
 
   return (
-    <div>
-      <h1>Game Status</h1>
+    <div className={classes.status}>
       <button onClick={fetchGameStatus}>Game Status</button>
       <p>
         game status: {gameStatus ? JSON.stringify(gameStatus) : "Loading..."}

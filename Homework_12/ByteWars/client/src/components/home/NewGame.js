@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import ImgHuman from "../assets/img/human.png";
-import ImgRobot from "../assets/img/robot.png";
+import ImgHuman from "../../assets/img/human.png";
+import ImgRobot from "../../assets/img/robot.png";
 import { GameStatus } from "./GameStatus";
+import classes from "./GameStatus.module.css";
 
 export const NewGame = () => {
   const [userRobot, setUserRobot] = useState(false);
@@ -80,7 +81,7 @@ export const NewGame = () => {
   };
 
   return (
-    <div>
+    <div className={classes.newGame}>
       {userHuman || userRobot ? (
         <div>
           <p>Let's play as {userHuman ? "human" : "robot"}</p>
