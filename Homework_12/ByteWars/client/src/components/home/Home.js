@@ -57,7 +57,6 @@ export function Home() {
     <div className={classes.App}>
       {isLoggedIn ? (
         <>
-          <Header/>
           <nav>
             <p>Hello, {username}!</p>
             <button onClick={handleLogout}>Logout</button>
@@ -66,11 +65,7 @@ export function Home() {
         </>
       ) : (
         <>
-         
-            <h1>
-              Welcome to <Header/>
-            </h1>
-         
+        <h1>Welcome Player</h1>
           <form>
             <input
               type="text"
@@ -101,5 +96,3 @@ export function Home() {
     </div>
   );
 }
-
-

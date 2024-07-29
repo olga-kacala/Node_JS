@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ImgHuman from "../../assets/img/human.png";
 import ImgRobot from "../../assets/img/robot.png";
 import { GameStatus } from "./GameStatus";
-import classes from "./GameStatus.module.css";
+import classes from "./NewGame.module.css";
 
 export const NewGame = () => {
   const [userRobot, setUserRobot] = useState(false);
@@ -90,9 +90,20 @@ export const NewGame = () => {
               New Game
             </button>
           ) : (
-            <button type="button" onClick={handleAttack}>
-              Attack!
-            </button>
+            <div>
+              <div className={classes.cardsContainer}>  
+              
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              <div className={classes.card} onClick={handleAttack}></div>
+              </div>
+            </div>
+           
           )}
 
           <GameStatus gameId={gameId} />

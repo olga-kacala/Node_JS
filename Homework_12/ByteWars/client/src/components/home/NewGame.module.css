@@ -1,3 +1,16 @@
 .newGame {
-    height: 100vh;
+    height: 70vh;
+}
+
+.cardsContainer {
+    display: flex;
+    flex-direction: row;
+  
+}
+.card {
+    height: 20vh;
+    width: 15vh;
+    background-color: blue;
+    margin: 3px;
+    cursor: pointer;
 }

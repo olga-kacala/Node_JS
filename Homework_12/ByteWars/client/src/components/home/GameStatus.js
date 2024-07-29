@@ -28,7 +28,7 @@ export const GameStatus = ({ gameId }) => {
 
   return (
     <div className={classes.status}>
-      <button onClick={fetchGameStatus}>Game Status</button>
+      
       <p>
         game status: {gameStatus ? JSON.stringify(gameStatus) : "Loading..."}
       </p>
