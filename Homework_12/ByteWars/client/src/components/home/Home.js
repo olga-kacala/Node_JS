@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Header } from "../header/Header";
 import classes from "./Home.module.css";
 import { NewGame } from "./NewGame";
 

@@ -5,132 +5,110 @@ const db = require("./db/database");
 const jwt = require("./utils/jwt");
 const path = require("path");
 const cors = require("cors");
+const User = require("./classes/User");
+const Game = require("./classes/Game");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const saltRounds = 10;
 const secret = "your-256-bit-secret";
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// Register User
-app.post("/api/v1/register", (req, res) => {
+//Endpoint: Register User
+app.post('/api/v1/register', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    return res
-      .status(400)
-      .json({ message: "Username and password are required" });
+    return res.status(400).json({ message: 'Username and password are required' });
   }
-
-  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-    if (err) return res.status(500).json({ message: "Error hashing password" });
-
-    const query = "INSERT INTO users (username, password) VALUES (?, ?)";
-    db.run(query, [username, hashedPassword], function (err) {
-      if (err) {
-        return res
-          .status(500)
-          .json({ message: "User registration failed", error: err });
-      }
-      res.json({
-        message: "User registered successfully",
-        userId: this.lastID,
-      });
-    });
-  });
+  try {
+    const user = new User(username, password);
+    await user.save();
+    res.json({ message: 'User registered successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'User registration failed', error: err.message });
+  }
 });
 
-// Login User
-app.post("/api/v1/login", (req, res) => {
+//Endpoint: Login User
+app.post('/api/v1/login', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    return res
-      .status(400)
-      .json({ message: "Username and password are required" });
+    return res.status(400).json({ message: 'Username and password are required' });
   }
-  const query = "SELECT * FROM users WHERE username = ?";
-  db.get(query, [username], (err, user) => {
-    if (err || !user) {
-      return res.status(401).json({ message: "Invalid username or password" });
+  try {
+    const user = await User.findByUsername(username);
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
-
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err || !isMatch) {
-        return res
-          .status(401)
-          .json({ message: "Invalid username or password" });
-      }
-
-      const token = jwt.sign({ userId: user.id }, secret);
-      res.json({ token });
-    });
-  });
+    const isMatch = await User.comparePassword(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+    const token = jwt.sign({ userId: user.id }, secret);
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ message: 'Login failed', error: err.message });
+  }
 });
 
 // Endpoint: Start Game
-app.post("/api/v1/startGame", (req, res) => {
+app.post('/api/v1/startGame', async (req, res) => {
   const { side } = req.body;
   if (!side) {
-    return res.status(400).json({ message: "Side is required" });
+    return res.status(400).json({ message: 'Side is required' });
   }
-
-  const gameId = `game-${Date.now()}`;
-  const status = 'initiaziled';
-  const turn = 0;
-  const userHealth = 100;
-  const opponentHealth = 100;
-  const query = "INSERT INTO games (gameId, status, side, turn, userHealth, opponentHealth) VALUES (?, ?, ?, ?, ?, ?)";
-  db.run(query, [gameId, status, side, turn, userHealth, opponentHealth], function (err) {
-    if (err) {
-      return res
-        .status(500)
-        .json({ message: "Game creation failed", error: err });
-    }
-    res.json({ gameId, status });
-  });
+  try {
+    const game = new Game(side);
+    await game.save();
+    res.json({ gameId: game.gameId, status: game.status });
+  } catch (err) {
+    res.status(500).json({ message: 'Game creation failed', error: err.message });
+  }
 });
 
 // Endpoint: Get Game Status
-app.post("/api/v1/gameStatus", (req, res) => {
+app.post('/api/v1/gameStatus', async (req, res) => {
   const { gameId } = req.body;
   if (!gameId) {
-    return res.status(400).json({ message: "Game ID is required" });
+    return res.status(400).json({ message: 'Game ID is required' });
   }
-  const query = "SELECT * FROM games WHERE gameId = ?";
-  db.get(query, [gameId], (err, game) => {
-    if (err || !game) {
-      return res.status(404).json({ message: "Game not found" });
+  try {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      return res.status(404).json({ message: 'Game not found' });
     }
     res.json(game);
-  });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to retrieve game status', error: err.message });
+  }
 });
 
-app.post("/api/v1/attack", (req, res) => {
+// Endpoint: Attack move
+app.post('/api/v1/attack', async (req, res) => {
   const { gameId } = req.body;
   if (!gameId) {
-    return res.status(400).json({ message: "Game ID is required" });
+    return res.status(400).json({ message: 'Game ID is required' });
   }
-  const query = "SELECT * FROM games WHERE gameId = ?";
-  db.get(query, [gameId], (err, game) => {
-    if (err || !game) {
-      return res.status(404).json({ message: "Game not found" });
+  try {
+    const game = await Game.findById(gameId);
+    if (!game) {
+      return res.status(404).json({ message: 'Game not found' });
     }
 
     // Check if the game is already finished
     if (game.userHealth <= 0 || game.opponentHealth <= 0) {
-      return res.status(400).json({ message: "The game is already finished" });
+      return res.status(400).json({ message: 'The game is already finished' });
     }
 
     const userAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
     const newOpponentHealth = Math.max(game.opponentHealth - userAttackPower, 0); // User attack
 
-// Determine the game status after user attack
-let gameStatus = "ongoing";
-if (newOpponentHealth <= 0) {
-  gameStatus = "won";
-  
-}
+    // Determine the game status after user attack
+    let gameStatus = 'ongoing';
+    if (newOpponentHealth <= 0) {
+      gameStatus = 'won';
+    }
 
     const opponentAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
     const newUserHealth = Math.max(game.userHealth - opponentAttackPower, 0); // Simulating opponent's attack
@@ -139,42 +117,35 @@ if (newOpponentHealth <= 0) {
     const newTurn = game.turn + 1;
 
     // Determine the game status after opponent attack
-   if (newUserHealth <= 0) {
-      gameStatus = "lost";
-   }
+    if (newUserHealth <= 0) {
+      gameStatus = 'lost';
+    }
 
-    db.run(
-      "UPDATE games SET userHealth = ?, opponentHealth = ?, status = ?, turn = ? WHERE gameId = ?",
-      [newUserHealth, newOpponentHealth, gameStatus, newTurn, gameId],
-      function (err) {
-        if (err) {
-          console.error("Error updating game health:", err);
-          return res.status(500).json({ message: "Error updating game health", error: err.message });
-        }
-        res.json({
-          message: "Attack successful",
-          userHealth: newUserHealth,
-          opponentHealth: newOpponentHealth,
-          turn: newTurn,
-          gameStatus: gameStatus,
-        });
-      }
-    );
-  });
+    await Game.updateHealth(gameId, newUserHealth, newOpponentHealth, newTurn, gameStatus);
+
+    res.json({
+      message: 'Attack successful',
+      userHealth: newUserHealth,
+      opponentHealth: newOpponentHealth,
+      turn: newTurn,
+      gameStatus: gameStatus,
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to make attack', error: err.message });
+  }
 });
 
-
 // Middleware to verify JWT
-app.use("/api/v1", (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+app.use('/api/v1', (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
-    return res.status(401).json({ message: "Authorization token required" });
+    return res.status(401).json({ message: 'Authorization token required' });
   }
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ message: "Invalid token" });
+      return res.status(401).json({ message: 'Invalid token' });
     }
-    req.userId = decoded.userId;
+    req.user = decoded;
     next();
   });
 });
