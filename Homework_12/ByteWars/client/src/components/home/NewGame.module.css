@@ -7,10 +7,3 @@
     flex-direction: row;
   
 }
-.card {
-    height: 20vh;
-    width: 15vh;
-    background-color: blue;
-    margin: 3px;
-    cursor: pointer;
-}

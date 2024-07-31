@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ImgHuman from "../../assets/img/human.png";
 import ImgRobot from "../../assets/img/robot.png";
 import { GameStatus } from "./GameStatus";
+import { SingleCard } from "./SingleCard";
+import { generateCards } from "./CardGenerator";
 import classes from "./NewGame.module.css";
 
 export const NewGame = () => {
@@ -10,6 +12,8 @@ export const NewGame = () => {
   const [gameId, setGameId] = useState("");
   const [userHP, setUserHP] = useState(100);
   const [opponentHP, setOpponentHP] = useState(100);
+  const [cards, setCards] = useState([]);
+  const attackHP = 20;
 
   const handleHuman = async () => {
     setUserHuman(true);
@@ -43,6 +47,7 @@ export const NewGame = () => {
       setGameId(data.gameId);
       setUserHP(100);
       setOpponentHP(100);
+      setCards(generateCards(side));
     } catch (error) {
       console.error("Error starting game:", error);
     }
@@ -54,6 +59,7 @@ export const NewGame = () => {
     setGameId("");
     setUserHP(100);
     setOpponentHP(100);
+    setCards([]);
   };
 
   const handleAttack = async () => {
@@ -64,7 +70,7 @@ export const NewGame = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ gameId }),
+        body: JSON.stringify({ gameId, attackHP }),
       });
 
       if (!response.ok) {
@@ -90,25 +96,16 @@ export const NewGame = () => {
               New Game
             </button>
           ) : (
-            <div>
-              <div className={classes.cardsContainer}>  
-              
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              <div className={classes.card} onClick={handleAttack}></div>
-              </div>
+            <div className={classes.cardsContainer}>
+              {cards.map((card, index) => (
+                <SingleCard key={index} card={card} onClick={handleAttack} />
+              ))}
             </div>
-           
           )}
 
           <GameStatus gameId={gameId} />
-          <div>user HP:{userHP}</div>
-          <div>opponent HP:{opponentHP}</div>
+          <div>user HP: {userHP}</div>
+          <div>opponent HP: {opponentHP}</div>
         </div>
       ) : (
         <div>

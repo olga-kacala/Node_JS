@@ -1,4 +1,3 @@
-// server/models/Game.js
 const db = require('../db/database');
 
 class Game {

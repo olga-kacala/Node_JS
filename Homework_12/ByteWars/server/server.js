@@ -1,7 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const db = require("./db/database");
 const jwt = require("./utils/jwt");
 const path = require("path");
 const cors = require("cors");
@@ -86,9 +84,9 @@ app.post('/api/v1/gameStatus', async (req, res) => {
 
 // Endpoint: Attack move
 app.post('/api/v1/attack', async (req, res) => {
-  const { gameId } = req.body;
-  if (!gameId) {
-    return res.status(400).json({ message: 'Game ID is required' });
+  const { gameId, attackHP } = req.body;
+  if (!gameId && attackHP) {
+    return res.status(400).json({ message: 'Game ID and HP is required' });
   }
   try {
     const game = await Game.findById(gameId);
@@ -101,7 +99,7 @@ app.post('/api/v1/attack', async (req, res) => {
       return res.status(400).json({ message: 'The game is already finished' });
     }
 
-    const userAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
+    const userAttackPower = attackHP;
     const newOpponentHealth = Math.max(game.opponentHealth - userAttackPower, 0); // User attack
 
     // Determine the game status after user attack
