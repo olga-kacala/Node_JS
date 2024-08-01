@@ -108,7 +108,8 @@ app.post('/api/v1/attack', async (req, res) => {
       gameStatus = 'won';
     }
 
-    const opponentAttackPower = Math.floor(Math.random() * (20 - 10 + 1)) + 10; // Random power between 10-20
+    const opponentAttackPower = Math.floor(Math.random() * (55 - 10 + 1)) + 10; // Random power between 10-55
+
     const newUserHealth = Math.max(game.userHealth - opponentAttackPower, 0); // Simulating opponent's attack
 
     // Increment turn
@@ -127,6 +128,8 @@ app.post('/api/v1/attack', async (req, res) => {
       opponentHealth: newOpponentHealth,
       turn: newTurn,
       gameStatus: gameStatus,
+      attackHP:attackHP,
+      opponentAttackPower: opponentAttackPower
     });
   } catch (err) {
     res.status(500).json({ message: 'Failed to make attack', error: err.message });

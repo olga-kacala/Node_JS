@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ImgHuman from "../../assets/img/human.png";
 import ImgRobot from "../../assets/img/robot.png";
-import { GameStatus } from "./GameStatus";
 import { SingleCard } from "./SingleCard";
 import { generateCards } from "./CardGenerator";
 import classes from "./NewGame.module.css";
@@ -13,7 +12,8 @@ export const NewGame = () => {
   const [userHP, setUserHP] = useState(100);
   const [opponentHP, setOpponentHP] = useState(100);
   const [cards, setCards] = useState([]);
-  const attackHP = 20;
+  const [attack, setAttack] = useState(0);
+  const [opponentAttack, setOpponentAttack] = useState(0);
 
   const handleHuman = async () => {
     setUserHuman(true);
@@ -62,7 +62,7 @@ export const NewGame = () => {
     setCards([]);
   };
 
-  const handleAttack = async () => {
+  const handleAttack = async (attackValue) => {
     try {
       const response = await fetch("http://localhost:3000/api/v1/attack", {
         method: "POST",
@@ -70,7 +70,7 @@ export const NewGame = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ gameId, attackHP }),
+        body: JSON.stringify({ gameId, attackHP: attackValue }),
       });
 
       if (!response.ok) {
@@ -79,6 +79,8 @@ export const NewGame = () => {
 
       const data = await response.json();
       console.log("Attack response data:", data);
+      setAttack(data.attackHP);
+      setOpponentAttack(data.opponentAttackPower);
       setUserHP(data.userHealth);
       setOpponentHP(data.opponentHealth);
     } catch (error) {
@@ -102,8 +104,8 @@ export const NewGame = () => {
               ))}
             </div>
           )}
-
-          <GameStatus gameId={gameId} />
+          <div>attack: {attack}</div>
+          <div>opponent attact: {opponentAttack}</div>
           <div>user HP: {userHP}</div>
           <div>opponent HP: {opponentHP}</div>
         </div>

@@ -29,7 +29,8 @@ db.serialize(() => {
     side TEXT,
     turn INTEGER, 
     userHealth INTEGER,
-    opponentHealth INTEGER
+    opponentHealth INTEGER,
+    attackHP INTEGER
   )`);
   
 

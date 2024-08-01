@@ -68,26 +68,26 @@ class Card {
   generateLuck() {
     if (this.side === 'human') {
       switch (this.name) {
-        case 'Warrior': return 5;
+        case 'Warrior': return 2;
         case 'Nerd': return 7;
-        case 'Granny': return 6;
-        case 'CEO': return 8;
-        case 'Librarian': return 4;
-        case 'Athlete': return 5;
-        case 'Scientist': return 6;
+        case 'Granny': return 9;
+        case 'CEO': return 5;
+        case 'Librarian': return 8;
+        case 'Athlete': return 3;
+        case 'Scientist': return 1;
         case 'Doctor': return 7;
         default: return 5;
       }
     } else if (this.side === 'robot') {
       switch (this.name) {
-        case 'RoboCap': return 6;
+        case 'RoboCap': return 2;
         case 'Wally': return 8;
-        case 'Fax Machine': return 4;
-        case 'Tesla': return 5;
-        case 'Flip Phone': return 3;
+        case 'Fax Machine': return 5;
+        case 'Tesla': return 1;
+        case 'Flip Phone': return 6;
         case 'Internet Explorer': return 2;
-        case 'Smartphone': return 7;
-        case 'AI Assistant': return 6;
+        case 'Smartphone': return 4;
+        case 'AI Assistant': return 5;
         default: return 4;
       }
     }
