@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./SingleCard.module.css";
 
 export const SingleCard = ({ card, onClick }) => {
+  const [isUsed, setIsUsed] = useState(false);
   let luckyFactor;
 
   // Calculate luckyFactor based on luck value
@@ -18,16 +19,30 @@ export const SingleCard = ({ card, onClick }) => {
     card.powerAttack * (1 + luckyFactor / 2) - (1 / card.speedAttack) * 10;
   attack = Math.ceil(attack); // Round up to the nearest whole number
 
-  const handleClick = () =>{
-    onClick(attack)
-  }
+  const handleClick = () => {
+    if (!isUsed) {
+      onClick(attack);
+      setIsUsed(true); // Mark the card as used
+    }
+  };
+
   return (
     <div className={classes.card} onClick={handleClick}>
-      <h3>{card.name}</h3>
-      <p>Attack Power: {card.powerAttack}</p>
-      <p>Attack Speed: {card.speedAttack}</p>
-      <p>Luck: {card.luck}</p>
-      <p>Attack: {attack}</p>
+      {isUsed ? (
+        <div className={classes.covered}>
+          <p>Byte Wars</p>
+        </div>
+      ) : (
+        <>
+        <div className={classes.cardName}><h3>{card.name}</h3></div>
+          <div className={classes.valuesContainer}>
+          <p>Power: {card.powerAttack}</p>
+          <p>Speed: {card.speedAttack}</p>
+          <p>Luck: {card.luck}</p>
+          </div>
+          
+        </>
+      )}
     </div>
   );
 };

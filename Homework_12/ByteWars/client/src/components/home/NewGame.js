@@ -42,16 +42,33 @@ export const NewGame = () => {
       if (!response.ok) {
         throw new Error("Failed to start game");
       }
-
+  
       const data = await response.json();
       setGameId(data.gameId);
       setUserHP(100);
       setOpponentHP(100);
-      setCards(generateCards(side));
+      
+      // Generate and shuffle the cards
+      let generatedCards = generateCards(side);
+      generatedCards = shuffleArray(generatedCards);  // Shuffle the cards
+  
+      // Select the first 5 cards
+      const selectedCards = generatedCards.slice(0, 5);
+      setCards(selectedCards);
     } catch (error) {
       console.error("Error starting game:", error);
     }
   };
+  
+  // Utility function to shuffle an array
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  
 
   const handleRestartGame = async () => {
     setUserRobot(false);
@@ -78,7 +95,6 @@ export const NewGame = () => {
       }
 
       const data = await response.json();
-      console.log("Attack response data:", data);
       setAttack(data.attackHP);
       setOpponentAttack(data.opponentAttackPower);
       setUserHP(data.userHealth);
