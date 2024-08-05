@@ -10,7 +10,7 @@ class Card {
   generatePowerAttack() {
     if (this.side === 'human') {
       switch (this.name) {
-        case 'Warrior': return 25;
+        case 'Warrior': return 20;
         case 'Nerd': return 10;
         case 'Granny': return 5;
         case 'CEO': return 20;
@@ -39,14 +39,14 @@ class Card {
   generateSpeedAttack() {
     if (this.side === 'human') {
       switch (this.name) {
-        case 'Warrior': return 8;
-        case 'Nerd': return 12;
-        case 'Granny': return 3;
-        case 'CEO': return 7;
-        case 'Librarian': return 10;
-        case 'Athlete': return 9;
-        case 'Scientist': return 8;
-        case 'Doctor': return 7;
+        case 'Warrior': return 6;
+        case 'Nerd': return 1;
+        case 'Granny': return 2;
+        case 'CEO': return 4;
+        case 'Librarian': return 3;
+        case 'Athlete': return 5;
+        case 'Scientist': return 4;
+        case 'Doctor': return 3;
         default: return 5;
       }
     } else if (this.side === 'robot') {
@@ -81,13 +81,13 @@ class Card {
     } else if (this.side === 'robot') {
       switch (this.name) {
         case 'RoboCap': return 2;
-        case 'Wally': return 8;
-        case 'Fax Machine': return 5;
+        case 'Wally': return 4;
+        case 'Fax Machine': return 4;
         case 'Tesla': return 1;
-        case 'Flip Phone': return 6;
-        case 'Internet Explorer': return 2;
+        case 'Flip Phone': return 3;
+        case 'Internet Explorer': return 1;
         case 'Smartphone': return 4;
-        case 'AI Assistant': return 5;
+        case 'AI Assistant': return 4;
         default: return 4;
       }
     }

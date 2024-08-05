@@ -30,18 +30,19 @@ export const SingleCard = ({ card, onClick }) => {
     <div className={classes.card} onClick={handleClick}>
       {isUsed ? (
         <div className={classes.covered}>
-          <p>Byte Wars</p>
+          <div>Byte Wars</div>
         </div>
       ) : (
-        <>
-        <div className={classes.cardName}><h3>{card.name}</h3></div>
-          <div className={classes.valuesContainer}>
-          <p>Power: {card.powerAttack}</p>
-          <p>Speed: {card.speedAttack}</p>
-          <p>Luck: {card.luck}</p>
+        <div className={classes.front}>
+          <div className={classes.cardName}>
+            <h3>{card.name}</h3>
           </div>
-          
-        </>
+          <div className={classes.valuesContainer}>
+            <p>Power: {card.powerAttack}</p>
+            <p>Speed: {card.speedAttack}</p>
+            <p>Luck: {card.luck}</p>
+          </div>
+        </div>
       )}
     </div>
   );

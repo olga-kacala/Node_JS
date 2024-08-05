@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import classes from "./Home.module.css";
 import { NewGame } from "./NewGame";
+import { Link } from "react-router-dom";
 
 export function Home() {
   const [username, setUsername] = useState("");
@@ -58,6 +59,8 @@ export function Home() {
         <>
           <nav>
             <p>Hello, {username}!</p>
+            <Link to="/TopResults" className={classes.results}>Top results</Link>
+            
             <button onClick={handleLogout}>Logout</button>
           </nav>
           <NewGame />

@@ -30,7 +30,8 @@ db.serialize(() => {
     turn INTEGER, 
     userHealth INTEGER,
     opponentHealth INTEGER,
-    attackHP INTEGER
+    attackHP INTEGER,
+    totalAttack INTEGER DEFAULT 0
   )`);
   
 

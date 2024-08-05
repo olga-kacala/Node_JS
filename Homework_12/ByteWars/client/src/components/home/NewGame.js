@@ -14,6 +14,9 @@ export const NewGame = () => {
   const [cards, setCards] = useState([]);
   const [attack, setAttack] = useState(0);
   const [opponentAttack, setOpponentAttack] = useState(0);
+  const [opponentHit, setOpponentHit] = useState(false);
+  const [status, setStatus] = useState("");
+  const [totalAttack, setTotalAttack] = useState(0); // New state to track total attack
 
   const handleHuman = async () => {
     setUserHuman(true);
@@ -42,25 +45,23 @@ export const NewGame = () => {
       if (!response.ok) {
         throw new Error("Failed to start game");
       }
-  
+
       const data = await response.json();
       setGameId(data.gameId);
       setUserHP(100);
       setOpponentHP(100);
-      
-      // Generate and shuffle the cards
+      setTotalAttack(0); // Reset total attack
+
       let generatedCards = generateCards(side);
-      generatedCards = shuffleArray(generatedCards);  // Shuffle the cards
-  
-      // Select the first 5 cards
-      const selectedCards = generatedCards.slice(0, 5);
+      generatedCards = shuffleArray(generatedCards);
+
+      const selectedCards = generatedCards.slice(0, 6);
       setCards(selectedCards);
     } catch (error) {
       console.error("Error starting game:", error);
     }
   };
-  
-  // Utility function to shuffle an array
+
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -68,7 +69,6 @@ export const NewGame = () => {
     }
     return array;
   }
-  
 
   const handleRestartGame = async () => {
     setUserRobot(false);
@@ -77,6 +77,9 @@ export const NewGame = () => {
     setUserHP(100);
     setOpponentHP(100);
     setCards([]);
+    setAttack(0);
+    setOpponentAttack(0);
+    setTotalAttack(0); // Reset total attack
   };
 
   const handleAttack = async (attackValue) => {
@@ -99,8 +102,38 @@ export const NewGame = () => {
       setOpponentAttack(data.opponentAttackPower);
       setUserHP(data.userHealth);
       setOpponentHP(data.opponentHealth);
+      setStatus(data.gameStatus);
+      setTotalAttack(prevTotal => prevTotal + attackValue); 
+      setOpponentHit(true);
+      setTimeout(() => setOpponentHit(false), 300);
+
+      // Send total attack to server when the game ends
+      if (data.gameStatus !== "ongoing") {
+        await saveTotalAttack(data.gameStatus);
+      }
+  
     } catch (error) {
       console.error("Error making a move:", error);
+    }
+  };
+
+  const saveTotalAttack = async (gameStatus) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/v1/saveAttack", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ gameId, totalAttack, gameStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save total attack");
+      }
+
+    } catch (error) {
+      console.error("Error saving total attack:", error);
     }
   };
 
@@ -108,26 +141,63 @@ export const NewGame = () => {
     <div className={classes.newGame}>
       {userHuman || userRobot ? (
         <div>
-          <p>Let's play as {userHuman ? "human" : "robot"}</p>
           {userHP <= 0 || opponentHP <= 0 ? (
-            <button type="button" onClick={handleRestartGame}>
-              New Game
-            </button>
-          ) : (
-            <div className={classes.cardsContainer}>
-              {cards.map((card, index) => (
-                <SingleCard key={index} card={card} onClick={handleAttack} />
-              ))}
+            <div className={classes.endGameContainer}> 
+              <button type="button" onClick={handleRestartGame}>
+                New Game
+              </button>
+              <div>{status === "won" ? <h1>Congrats you have won!</h1> : <h1>You have lost</h1>}</div>
             </div>
+          ) : (
+            <>
+              <p>{userHuman ? "FIGHT Human!" : "01100110 01101001 01100111 01101000 01110100"}</p>
+              <div className={classes.cardsContainer}>
+                {cards.map((card, index) => (
+                  <SingleCard key={index} card={card} onClick={handleAttack} />
+                ))}
+              </div>
+            </>
           )}
-          <div>attack: {attack}</div>
-          <div>opponent attact: {opponentAttack}</div>
-          <div>user HP: {userHP}</div>
-          <div>opponent HP: {opponentHP}</div>
+          
+          <div className={classes.resultsContainer}>
+            <section className={classes.fightResults}>
+              <h3>You</h3>
+              <div>HP: {userHP}</div>
+              <div>Attack: {attack}</div>
+              <div>Total Attack: {totalAttack}</div>
+            
+            </section>
+            {userHuman ? (
+              <img
+                title="robot"
+                alt="robot"
+                src={ImgRobot}
+                className={`${classes.opponentImg} ${
+                  opponentHit ? classes.redEffect : ""
+                }`}
+              />
+            ) : (
+              <img
+                title="human"
+                alt="human"
+                src={ImgHuman}
+                className={`${classes.opponentImg} ${
+                  opponentHit ? classes.redEffect : ""
+                }`}
+              />
+            )}
+            <section className={classes.fightResults}>
+              <h3>{userHuman ? "Robot" : "Human"}</h3>
+              <div>HP: {opponentHP}</div>
+              <div>Attack: {opponentAttack}</div>
+            </section>
+          </div>
+          
         </div>
       ) : (
-        <div>
+        <div className={classes.chooseContainer}>
           <h2>Choose your character:</h2>
+          <p>Will you harness the raw power of a robot’s lightning-fast attacks, or trust in the unpredictable luck of the human spirit? The fate of the battle rests in your hands—choose wisely!</p>
           <img title="robot" alt="robot" src={ImgRobot} onClick={handleRobot} />
           <img title="human" alt="human" src={ImgHuman} onClick={handleHuman} />
         </div>

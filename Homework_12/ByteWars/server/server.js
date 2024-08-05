@@ -73,25 +73,6 @@ app.post("/api/v1/startGame", async (req, res) => {
   }
 });
 
-// Endpoint: Get Game Status
-app.post("/api/v1/gameStatus", async (req, res) => {
-  const { gameId } = req.body;
-  if (!gameId) {
-    return res.status(400).json({ message: "Game ID is required" });
-  }
-  try {
-    const game = await Game.findById(gameId);
-    if (!game) {
-      return res.status(404).json({ message: "Game not found" });
-    }
-    res.json(game);
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Failed to retrieve game status", error: err.message });
-  }
-});
-
 // Endpoint: Attack move
 app.post("/api/v1/attack", async (req, res) => {
   const { gameId, attackHP } = req.body;
@@ -113,7 +94,7 @@ app.post("/api/v1/attack", async (req, res) => {
     const newOpponentHealth = Math.max(
       game.opponentHealth - userAttackPower,
       0
-    ); // User attack
+    ); 
 
     // Determine the game status after user attack
     let gameStatus = "ongoing";
@@ -156,6 +137,33 @@ app.post("/api/v1/attack", async (req, res) => {
       .json({ message: "Failed to make attack", error: err.message });
   }
 });
+
+// Endpoint: Save Total Attack
+app.post("/api/v1/saveAttack", async (req, res) => {
+  const { gameId, totalAttack, gameStatus } = req.body;
+  
+  if (!gameId || totalAttack === undefined || !gameStatus) {
+    return res.status(400).json({ message: "Game ID, total attack, and game status are required" });
+  }
+  
+  try {
+    await Game.updateTotalAttack(gameId, totalAttack, gameStatus);
+    res.json({ message: "Total attack saved successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to save total attack", error: err.message });
+  }
+});
+
+// Endpoint: Get Top 10 Results
+app.get("/api/v1/topResults", async (req, res) => {
+  try {
+    const topResults = await Game.getTopResults();
+    res.json(topResults);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to retrieve top results", error: err.message });
+  }
+});
+
 
 // Middleware to verify JWT
 app.use("/api/v1", (req, res, next) => {
