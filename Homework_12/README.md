@@ -13,6 +13,7 @@ In _Byte Wars: AI vs Humans_ 🤖, players engage in a whimsical conflict betwee
   - [API Documentation](#api-documentation)
     - [Endpoints](#endpoints)
   - [Database Schema](#database-schema)
+    - [Relationships](#relationships)
     - [Users Table](#users-table)
     - [Games Table](#games-table)
     - [Schema Notes](#schema-notes)
@@ -172,6 +173,24 @@ _Byte Wars: AI vs Humans_ is a strategic game where a human player battles again
 
 ## Database Schema
 
++----------------+ +----------------+
+| Users | | Games |
++----------------+ +----------------+
+| id | | gameId |
+| username | | status |
+| password | | side |
++----------------+ | turn |
+| userHealth |
+| opponentHealth |
+| attackHP |
+| totalAttack |
++----------------+
+
+### Relationships
+
+- **Users and Games:**
+  - There is no direct foreign key relationship between `Users` and `Games` in the current schema. However, each game can be associated with a user via application logic (e.g., a user might start or play a game).
+
 ### Users Table
 
 - **id:** INTEGER, PRIMARY KEY, AUTOINCREMENT
@@ -209,6 +228,7 @@ _Byte Wars: AI vs Humans_ is a strategic game where a human player battles again
   - The `password` column stores the user's hashed password.
 
 - **Games Table:**
+
   - The `gameId` serves as a unique identifier for each game session.
   - The `status` column indicates the current state of the game.
   - The `side` column tracks whether the player is on the "human" or "robot" side.
@@ -216,6 +236,15 @@ _Byte Wars: AI vs Humans_ is a strategic game where a human player battles again
   - The `userHealth` and `opponentHealth` columns track the health status of the user and the opponent, respectively.
   - The `attackHP` column records the attack power used in the last move.
   - The `totalAttack` column accumulates the total attack power across the game.
+
+- **Normalization:**  
+  The schema is designed to be simple and normalized for the purposes of this game. Future extensions might include additional tables or fields to better track user-game relationships, such as adding a foreign key to link users to games they start or participate in.
+
+- **Indexes:**  
+  Indexes on `username` in the `Users` table and `gameId` in the `Games` table help improve query performance.
+
+- **Security Considerations:**  
+  Passwords are stored hashed, which is crucial for maintaining user security.
 
 ### Clone this repo with command
 
