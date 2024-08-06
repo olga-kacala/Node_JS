@@ -1,16 +1,15 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-
+const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
 // Resolve the path to the database file
-const dbPath = path.resolve(__dirname, 'byte-wars.db');
+const dbPath = path.resolve(__dirname, "byte-wars.db");
 
 // Open a connection to the database
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
-    console.error('Failed to connect to database:', err);
+    console.error("Failed to connect to database:", err);
   } else {
-    console.log('Connected to SQLite database.');
+    console.log("Connected to SQLite database.");
   }
 });
 
@@ -33,8 +32,6 @@ db.serialize(() => {
     attackHP INTEGER,
     totalAttack INTEGER DEFAULT 0
   )`);
-  
-
 });
 
 module.exports = db;

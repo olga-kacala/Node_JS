@@ -22,7 +22,7 @@ export const SingleCard = ({ card, onClick }) => {
   const handleClick = () => {
     if (!isUsed) {
       onClick(attack);
-      setIsUsed(true); // Mark the card as used
+      setIsUsed(true);
     }
   };
 

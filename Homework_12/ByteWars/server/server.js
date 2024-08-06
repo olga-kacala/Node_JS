@@ -94,7 +94,7 @@ app.post("/api/v1/attack", async (req, res) => {
     const newOpponentHealth = Math.max(
       game.opponentHealth - userAttackPower,
       0
-    ); 
+    );
 
     // Determine the game status after user attack
     let gameStatus = "ongoing";
@@ -141,16 +141,20 @@ app.post("/api/v1/attack", async (req, res) => {
 // Endpoint: Save Total Attack
 app.post("/api/v1/saveAttack", async (req, res) => {
   const { gameId, totalAttack, gameStatus } = req.body;
-  
+
   if (!gameId || totalAttack === undefined || !gameStatus) {
-    return res.status(400).json({ message: "Game ID, total attack, and game status are required" });
+    return res
+      .status(400)
+      .json({ message: "Game ID, total attack, and game status are required" });
   }
-  
+
   try {
     await Game.updateTotalAttack(gameId, totalAttack, gameStatus);
     res.json({ message: "Total attack saved successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Failed to save total attack", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to save total attack", error: err.message });
   }
 });
 
@@ -160,10 +164,35 @@ app.get("/api/v1/topResults", async (req, res) => {
     const topResults = await Game.getTopResults();
     res.json(topResults);
   } catch (err) {
-    res.status(500).json({ message: "Failed to retrieve top results", error: err.message });
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve top results", error: err.message });
   }
 });
 
+// Endpoint: Delete all users
+app.delete("/api/v1/deleteUsers", async (req, res) => {
+  try {
+    await User.deleteAll();
+    res.json({ message: "All users deleted successfully" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete users", error: err.message });
+  }
+});
+
+// Endpoint: Delete all games
+app.delete("/api/v1/deleteGames", async (req, res) => {
+  try {
+    await Game.deleteAll();
+    res.json({ message: "All games deleted successfully" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Failed to delete games", error: err.message });
+  }
+});
 
 // Middleware to verify JWT
 app.use("/api/v1", (req, res, next) => {

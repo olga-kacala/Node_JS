@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
-const db = require('../db/database');
+const bcrypt = require("bcrypt");
+const db = require("../db/database");
 
 class User {
   constructor(username, password) {
@@ -35,6 +35,16 @@ class User {
 
   static async comparePassword(inputPassword, storedPassword) {
     return await bcrypt.compare(inputPassword, storedPassword);
+  }
+
+  static async deleteAll() {
+    return new Promise((resolve, reject) => {
+      const query = "DELETE FROM users";
+      db.run(query, function (err) {
+        if (err) return reject(err);
+        resolve();
+      });
+    });
   }
 }
 

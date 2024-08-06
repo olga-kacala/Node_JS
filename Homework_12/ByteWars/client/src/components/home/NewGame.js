@@ -16,7 +16,7 @@ export const NewGame = () => {
   const [opponentAttack, setOpponentAttack] = useState(0);
   const [opponentHit, setOpponentHit] = useState(false);
   const [status, setStatus] = useState("");
-  const [totalAttack, setTotalAttack] = useState(0); // New state to track total attack
+  const [totalAttack, setTotalAttack] = useState(0);
 
   const handleHuman = async () => {
     setUserHuman(true);
@@ -50,7 +50,7 @@ export const NewGame = () => {
       setGameId(data.gameId);
       setUserHP(100);
       setOpponentHP(100);
-      setTotalAttack(0); 
+      setTotalAttack(0);
 
       let generatedCards = generateCards(side);
       generatedCards = shuffleArray(generatedCards);
@@ -79,7 +79,7 @@ export const NewGame = () => {
     setCards([]);
     setAttack(0);
     setOpponentAttack(0);
-    setTotalAttack(0); 
+    setTotalAttack(0);
   };
 
   const handleAttack = async (attackValue) => {
@@ -92,38 +92,37 @@ export const NewGame = () => {
         },
         body: JSON.stringify({ gameId, attackHP: attackValue }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to make attack");
       }
-  
+
       const data = await response.json();
       setAttack(data.attackHP);
       setOpponentAttack(data.opponentAttackPower);
       setUserHP(data.userHealth);
       setOpponentHP(data.opponentHealth);
       setStatus(data.gameStatus);
-  
+
       // Update totalAttack state and use a callback to ensure saveTotalAttack is called after the state is updated
       setTotalAttack((prevTotal) => {
         const updatedTotal = prevTotal + attackValue;
-        
+
         // Send total attack to server when the game ends
         if (data.gameStatus !== "ongoing") {
           saveTotalAttack(updatedTotal, data.gameStatus);
         }
-        
+
         return updatedTotal;
       });
-  
+
       setOpponentHit(true);
       setTimeout(() => setOpponentHit(false), 300);
     } catch (error) {
       console.error("Error making a move:", error);
     }
   };
-  
-  // Modify saveTotalAttack to accept totalAttack as an argument
+
   const saveTotalAttack = async (totalAttack, gameStatus) => {
     try {
       const response = await fetch("http://localhost:3000/api/v1/saveAttack", {
@@ -134,31 +133,39 @@ export const NewGame = () => {
         },
         body: JSON.stringify({ gameId, totalAttack, gameStatus }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to save total attack");
       }
-  
     } catch (error) {
       console.error("Error saving total attack:", error);
     }
   };
-  
 
   return (
     <div className={classes.newGame}>
       {userHuman || userRobot ? (
         <div>
           {userHP <= 0 || opponentHP <= 0 ? (
-            <div className={classes.endGameContainer}> 
+            <div className={classes.endGameContainer}>
               <button type="button" onClick={handleRestartGame}>
                 New Game
               </button>
-              <div>{status === "won" ? <h1>Congrats you have won!</h1> : <h1>You have lost</h1>}</div>
+              <div>
+                {status === "won" ? (
+                  <h1>Congrats you have won!</h1>
+                ) : (
+                  <h1>You have lost</h1>
+                )}
+              </div>
             </div>
           ) : (
             <>
-              <p>{userHuman ? "FIGHT Human!" : "01100110 01101001 01100111 01101000 01110100"}</p>
+              <p>
+                {userHuman
+                  ? "FIGHT Human!"
+                  : "01100110 01101001 01100111 01101000 01110100"}
+              </p>
               <div className={classes.cardsContainer}>
                 {cards.map((card, index) => (
                   <SingleCard key={index} card={card} onClick={handleAttack} />
@@ -166,14 +173,13 @@ export const NewGame = () => {
               </div>
             </>
           )}
-          
+
           <div className={classes.resultsContainer}>
             <section className={classes.fightResults}>
               <h3>You</h3>
               <div>HP: {userHP}</div>
               <div>Attack: {attack}</div>
               <div>Total Attack: {totalAttack}</div>
-            
             </section>
             {userHuman ? (
               <img
@@ -200,12 +206,15 @@ export const NewGame = () => {
               <div>Attack: {opponentAttack}</div>
             </section>
           </div>
-          
         </div>
       ) : (
         <div className={classes.chooseContainer}>
           <h2>Choose your character:</h2>
-          <p>Will you harness the raw power of a robot’s lightning-fast attacks, or trust in the unpredictable luck of the human spirit? The fate of the battle rests in your hands—choose wisely!</p>
+          <p>
+            Will you harness the raw power of a robot’s lightning-fast attacks,
+            or trust in the unpredictable luck of the human spirit? The fate of
+            the battle rests in your hands—choose wisely!
+          </p>
           <img title="robot" alt="robot" src={ImgRobot} onClick={handleRobot} />
           <img title="human" alt="human" src={ImgHuman} onClick={handleHuman} />
         </div>

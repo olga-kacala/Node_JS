@@ -59,15 +59,17 @@ export function Home() {
         <>
           <nav>
             <p>Hello, {username}!</p>
-            <Link to="/TopResults" className={classes.results}>Top results</Link>
-            
+            <Link to="/TopResults" className={classes.results}>
+              Top results
+            </Link>
+
             <button onClick={handleLogout}>Logout</button>
           </nav>
           <NewGame />
         </>
       ) : (
         <>
-        <h1>Welcome Player</h1>
+          <h1>Welcome Player</h1>
           <form>
             <input
               type="text"
