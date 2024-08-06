@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import classes from "./TopResults.module.css";
 
 export const TopResults = () => {
   const [topResults, setTopResults] = useState([]);
@@ -21,13 +22,13 @@ export const TopResults = () => {
   }, []);
 
   return (
-    <div>
+    <div className={classes.topResults}>
       <h2>Top 10 Results</h2>
       <ul>
         {topResults.map((result, index) => (
-          <li key={index}>
-            Game ID: {result.gameId}, Total Attack: {result.totalAttack}, Status: {result.status}
-          </li>
+          <p key={index}>
+            Total Attack: {result.totalAttack}, Side: {result.side}
+          </p>
         ))}
       </ul>
     </div>
