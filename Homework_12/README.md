@@ -44,7 +44,7 @@ _Byte Wars: AI vs Humans_ is a strategic game where a human player battles again
 
     ### Base URL
 
-    The base URL for API endpoints is `http://localhost:3000/api/v1`.
+    The base URL for API local:  http://localhost:3001.
 
 ## API Documentation
 
@@ -267,7 +267,7 @@ npm install
 To run the application in a Docker container, ensure you have Docker installed on your system. Use the following commands:
 
 **Start the application:**
-docker compose up
+docker-compose up
 
 **Stop the application:**
-docker compose down
+docker-compose down
