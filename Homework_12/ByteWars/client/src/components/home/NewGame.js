@@ -50,7 +50,7 @@ export const NewGame = () => {
       setGameId(data.gameId);
       setUserHP(100);
       setOpponentHP(100);
-      setTotalAttack(0); // Reset total attack
+      setTotalAttack(0); 
 
       let generatedCards = generateCards(side);
       generatedCards = shuffleArray(generatedCards);
@@ -79,7 +79,7 @@ export const NewGame = () => {
     setCards([]);
     setAttack(0);
     setOpponentAttack(0);
-    setTotalAttack(0); // Reset total attack
+    setTotalAttack(0); 
   };
 
   const handleAttack = async (attackValue) => {
@@ -92,32 +92,39 @@ export const NewGame = () => {
         },
         body: JSON.stringify({ gameId, attackHP: attackValue }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to make attack");
       }
-
+  
       const data = await response.json();
       setAttack(data.attackHP);
       setOpponentAttack(data.opponentAttackPower);
       setUserHP(data.userHealth);
       setOpponentHP(data.opponentHealth);
       setStatus(data.gameStatus);
-      setTotalAttack(prevTotal => prevTotal + attackValue); 
+  
+      // Update totalAttack state and use a callback to ensure saveTotalAttack is called after the state is updated
+      setTotalAttack((prevTotal) => {
+        const updatedTotal = prevTotal + attackValue;
+        
+        // Send total attack to server when the game ends
+        if (data.gameStatus !== "ongoing") {
+          saveTotalAttack(updatedTotal, data.gameStatus);
+        }
+        
+        return updatedTotal;
+      });
+  
       setOpponentHit(true);
       setTimeout(() => setOpponentHit(false), 300);
-
-      // Send total attack to server when the game ends
-      if (data.gameStatus !== "ongoing") {
-        await saveTotalAttack(data.gameStatus);
-      }
-  
     } catch (error) {
       console.error("Error making a move:", error);
     }
   };
-
-  const saveTotalAttack = async (gameStatus) => {
+  
+  // Modify saveTotalAttack to accept totalAttack as an argument
+  const saveTotalAttack = async (totalAttack, gameStatus) => {
     try {
       const response = await fetch("http://localhost:3000/api/v1/saveAttack", {
         method: "POST",
@@ -127,15 +134,16 @@ export const NewGame = () => {
         },
         body: JSON.stringify({ gameId, totalAttack, gameStatus }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to save total attack");
       }
-
+  
     } catch (error) {
       console.error("Error saving total attack:", error);
     }
   };
+  
 
   return (
     <div className={classes.newGame}>
