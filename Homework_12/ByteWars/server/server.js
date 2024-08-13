@@ -102,7 +102,7 @@ app.post("/api/v1/attack", async (req, res) => {
       gameStatus = "won";
     }
 
-    const opponentAttackPower = Math.floor(Math.random() * (30 - 2 + 1)) + 2; // Random power between 2-30
+    const opponentAttackPower = Math.floor(Math.random() * (40 - 10 + 1)) + 10; // Random power between 10-40
 
     const newUserHealth = Math.max(game.userHealth - opponentAttackPower, 0); // Simulating opponent's attack
 
