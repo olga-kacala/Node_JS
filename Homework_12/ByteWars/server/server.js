@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const jwt = require("./utils/jwt");
@@ -7,8 +9,8 @@ const User = require("./classes/User");
 const Game = require("./classes/Game");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const secret = "your-256-bit-secret";
+const PORT = process.env.PORT;
+const secret = process.env.JWT_SECRET;
 
 app.use(cors());
 app.use(bodyParser.json());

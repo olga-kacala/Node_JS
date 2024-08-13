@@ -1,9 +1,11 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, '../.env') });
+
 const fs = require("fs");
 
 // Resolve the path to the database file
-const dbPath = path.resolve(__dirname, "byte-wars.db");
+const dbPath = path.resolve(__dirname, process.env.DB_PATH);
 
 // Open a connection to the database
 const db = new sqlite3.Database(dbPath, (err) => {
