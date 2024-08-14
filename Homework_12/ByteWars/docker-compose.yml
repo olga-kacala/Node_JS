@@ -7,8 +7,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    # volumes:
+    #   - ./server:/app
     volumes:
-      - ./server:/app
+      - ./server:/app/server
+      - ./client:/app/client
     env_file:
       - ./server/.env
     depends_on:
