@@ -104,7 +104,7 @@ app.post("/api/v1/attack", async (req, res) => {
       gameStatus = "won";
     }
 
-    const opponentAttackPower = Math.floor(Math.random() * (40 - 10 + 1)) + 10; // Random power between 10-40
+    const opponentAttackPower = Math.floor(Math.random() * (35 - 10 + 1)) + 10; // Random power between 10-35
 
     const newUserHealth = Math.max(game.userHealth - opponentAttackPower, 0); // Simulating opponent's attack
 
@@ -175,8 +175,8 @@ app.get("/api/v1/topResults", async (req, res) => {
 // Endpoint: Delete all users
 app.delete("/api/v1/deleteUsers", async (req, res) => {
   try {
-    await User.deleteAll();
-    res.json({ message: "All users deleted successfully" });
+    const deletedRows = await User.deleteAll();
+    res.json({ message: `${deletedRows} users deleted successfully` });
   } catch (err) {
     res
       .status(500)
@@ -184,11 +184,11 @@ app.delete("/api/v1/deleteUsers", async (req, res) => {
   }
 });
 
-// Endpoint: Delete all games
+// // Endpoint: Delete all games
 app.delete("/api/v1/deleteGames", async (req, res) => {
   try {
-    await Game.deleteAll();
-    res.json({ message: "All games deleted successfully" });
+    const deletedRows = await Game.deleteAll();
+    res.json({ message: `${deletedRows} games deleted successfully` });
   } catch (err) {
     res
       .status(500)

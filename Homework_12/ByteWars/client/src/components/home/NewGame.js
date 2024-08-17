@@ -104,11 +104,10 @@ export const NewGame = () => {
       setOpponentHP(data.opponentHealth);
       setStatus(data.gameStatus);
 
-      // Update totalAttack state and use a callback to ensure saveTotalAttack is called after the state is updated
+  
       setTotalAttack((prevTotal) => {
         const updatedTotal = prevTotal + attackValue;
 
-        // Send total attack to server when the game ends
         if (data.gameStatus !== "ongoing") {
           saveTotalAttack(updatedTotal, data.gameStatus);
         }

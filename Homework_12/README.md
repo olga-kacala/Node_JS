@@ -17,12 +17,13 @@ In _Byte Wars: AI vs Humans_ 🤖, players engage in a whimsical conflict betwee
     - [Users Table](#users-table)
     - [Games Table](#games-table)
     - [Schema Notes](#schema-notes)
-    - [Clone this repo with command](#clone-this-repo-with-command)
-    - [Go to project folder](#go-to-project-folder)
-  - [Install](#install)
+  - [Start ByteWars App](#start-bytewars-app)
+    - [Clone this Repository](#clone-this-repository)
+    - [Navigate to the Project Folder](#navigate-to-the-project-folder)
+    - [Create the .env File](#create-the-env-file)
     - [Install dependencies](#install-dependencies)
-  - [Running the Application](#running-the-application)
     - [Run in Docker Container](#run-in-docker-container)
+    - [Access the Application](#access-the-application)
 
 ## Description
 
@@ -173,19 +174,6 @@ _Byte Wars: AI vs Humans_ is a strategic game where a human player battles again
 
 ## Database Schema
 
-+----------------+ +----------------+
-| Users | | Games |
-+----------------+ +----------------+
-| id | | gameId |
-| username | | status |
-| password | | side |
-+----------------+ | turn |
-| userHealth |
-| opponentHealth |
-| attackHP |
-| totalAttack |
-+----------------+
-
 ### Relationships
 
 - **Users and Games:**
@@ -246,28 +234,50 @@ _Byte Wars: AI vs Humans_ is a strategic game where a human player battles again
 - **Security Considerations:**  
   Passwords are stored hashed, which is crucial for maintaining user security.
 
-### Clone this repo with command
+## Start ByteWars App
 
-git clone <https://github.com/.......>
+### Clone this Repository
 
-### Go to project folder
+Clone the entire repository using the command:
 
-cd BytWars
+git clone https://github.com/olga-kacala/Node_JS.git
 
-## Install
+### Navigate to the Project Folder
+
+cd Node_JS/Homework_12/ByteWars
+
+### Create the .env File
+
+cd server
+touch .env
+
+Copy the contents from .env.example into the .env file and replace the secret key placeholder with:
+
+a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 
 ### Install dependencies
 
-npm install
+Install the necessary dependencies for the server and client:
 
-## Running the Application
+cd ..
+npm install
+cd client
+npm install
 
 ### Run in Docker Container
 
 To run the application in a Docker container, ensure you have Docker installed on your system. Use the following commands:
 
-**Start the application:**
-docker-compose up
+Start the application:
+docker-compose up --build
 
-**Stop the application:**
+Stop the application:
 docker-compose down
+
+### Access the Application
+
+Open your browser and navigate to:
+
+http://localhost:3001/
+
+to interact with the app and start the battle! 💥💥

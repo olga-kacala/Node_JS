@@ -4,16 +4,16 @@ FROM node:19.9.0
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
+# Copy the client package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Install the dependencies
+# Install the client dependencies
 RUN npm install
 
-# Copy the rest of the application code to the container
+# Copy the rest of the client application code to the container
 COPY . .
 
-# Expose the port that the app runs on
+# Expose the port that the client runs on
 EXPOSE 3001
 
 # Command to run the client

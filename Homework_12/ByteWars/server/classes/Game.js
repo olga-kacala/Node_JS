@@ -95,7 +95,7 @@ class Game {
       const query = "DELETE FROM games";
       db.run(query, function (err) {
         if (err) return reject(err);
-        resolve();
+        resolve(this.changes);
       });
     });
   }

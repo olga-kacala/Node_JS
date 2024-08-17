@@ -42,7 +42,7 @@ class User {
       const query = "DELETE FROM users";
       db.run(query, function (err) {
         if (err) return reject(err);
-        resolve();
+        resolve(this.changes);
       });
     });
   }

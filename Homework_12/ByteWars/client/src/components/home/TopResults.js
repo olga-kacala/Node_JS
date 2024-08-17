@@ -70,8 +70,8 @@ export const TopResults = () => {
           </p>
         ))}
       </ul>
-      <button onClick={handleDeleteUsers}>Delete all users</button>
       <button onClick={handleDeleteGames}>Delete all games</button>
+      <button onClick={handleDeleteUsers}>Delete all users</button>
     </div>
   );
 };
