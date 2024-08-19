@@ -15,14 +15,16 @@ const secret = process.env.JWT_SECRET;
 app.use(cors());
 app.use(bodyParser.json());
 
-//Endpoint: Register User
+// Endpoint: Register User
 app.post("/api/v1/register", async (req, res) => {
   const { username, password } = req.body;
+
   if (!username || !password) {
     return res
       .status(400)
       .json({ message: "Username and password are required" });
   }
+
   try {
     const user = new User(username, password);
     await user.save();
@@ -37,26 +39,32 @@ app.post("/api/v1/register", async (req, res) => {
 //Endpoint: Login User
 app.post("/api/v1/login", async (req, res) => {
   const { username, password } = req.body;
+  
   if (!username || !password) {
     return res
       .status(400)
       .json({ message: "Username and password are required" });
   }
+
   try {
     const user = await User.findByUsername(username);
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
+
     const isMatch = await User.comparePassword(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
+
     const token = jwt.sign({ userId: user.id }, secret);
     res.json({ token });
+
   } catch (err) {
     res.status(500).json({ message: "Login failed", error: err.message });
   }
 });
+
 
 // Endpoint: Start Game
 app.post("/api/v1/startGame", async (req, res) => {

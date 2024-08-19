@@ -7,6 +7,7 @@ export function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleLogin = async () => {
     try {
@@ -17,14 +18,19 @@ export function Home() {
         },
         body: JSON.stringify({ username, password }),
       });
+
       if (!response.ok) {
-        throw new Error("Login failed");
+        const errorData = await response.json();
+        throw new Error(errorData.message);
       }
+
       const data = await response.json();
       localStorage.setItem("token", data.token);
       setIsLoggedIn(true);
+      setMessage("");
     } catch (error) {
       console.error("Error logging in:", error);
+      setMessage(error.message);
     }
   };
 
@@ -42,14 +48,18 @@ export function Home() {
         },
         body: JSON.stringify({ username, password }),
       });
+
       if (!response.ok) {
-        throw new Error("Registration failed");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Registration failed");
       }
-      const data = await response.json();
-      console.log("Registration successful:", data);
+
+      await response.json();
+
       handleLogin();
     } catch (error) {
       console.error("Error registering:", error);
+      setMessage(error.message);
     }
   };
 
@@ -94,6 +104,7 @@ export function Home() {
                 Register
               </button>
             </div>
+            <div>{message}</div>
           </form>
         </>
       )}
