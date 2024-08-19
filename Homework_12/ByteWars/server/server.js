@@ -39,7 +39,7 @@ app.post("/api/v1/register", async (req, res) => {
 //Endpoint: Login User
 app.post("/api/v1/login", async (req, res) => {
   const { username, password } = req.body;
-  
+
   if (!username || !password) {
     return res
       .status(400)
@@ -59,12 +59,10 @@ app.post("/api/v1/login", async (req, res) => {
 
     const token = jwt.sign({ userId: user.id }, secret);
     res.json({ token });
-
   } catch (err) {
     res.status(500).json({ message: "Login failed", error: err.message });
   }
 });
-
 
 // Endpoint: Start Game
 app.post("/api/v1/startGame", async (req, res) => {

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import classes from "./Home.module.css";
 import { NewGame } from "./NewGame";
 import { Link } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 export function Home() {
-  const [username, setUsername] = useState("");
+  const { isLoggedIn, handleLogin, handleLogout, username, setUsername } =
+    useContext(AuthContext);
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleLogin = async () => {
+  const login = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/v1/login", {
         method: "POST",
@@ -25,8 +26,7 @@ export function Home() {
       }
 
       const data = await response.json();
-      localStorage.setItem("token", data.token);
-      setIsLoggedIn(true);
+      handleLogin(data.token, username);
       setMessage("");
     } catch (error) {
       console.error("Error logging in:", error);
@@ -34,12 +34,7 @@ export function Home() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-  };
-
-  const handleRegistration = async () => {
+  const register = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/v1/register", {
         method: "POST",
@@ -55,8 +50,7 @@ export function Home() {
       }
 
       await response.json();
-
-      handleLogin();
+      login();
     } catch (error) {
       console.error("Error registering:", error);
       setMessage(error.message);
@@ -72,7 +66,6 @@ export function Home() {
             <Link to="/TopResults" className={classes.results}>
               Top results
             </Link>
-
             <button onClick={handleLogout}>Logout</button>
           </nav>
           <NewGame />
@@ -95,12 +88,12 @@ export function Home() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button type="button" onClick={handleLogin}>
+            <button type="button" onClick={login}>
               Login
             </button>
             <div>
-              <h4> Not a player yet? </h4>
-              <button type="button" onClick={handleRegistration}>
+              <h4>Not a player yet?</h4>
+              <button type="button" onClick={register}>
                 Register
               </button>
             </div>
