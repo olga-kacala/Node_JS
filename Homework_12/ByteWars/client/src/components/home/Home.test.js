@@ -9,7 +9,6 @@ describe("Home Component", () => {
   const mockHandleLogout = jest.fn();
   const mockSetUsername = jest.fn();
 
-  // Render the Home component with given context values
   const renderHome = (isLoggedIn, username = "") =>
     render(
       <MemoryRouter>
@@ -44,7 +43,7 @@ describe("Home Component", () => {
   });
 
   it("calls handleLogin on successful login", async () => {
-    // Mock the fetch response for successful login
+    
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
@@ -63,7 +62,6 @@ describe("Home Component", () => {
 
     fireEvent.click(screen.getByText("Login"));
 
-    // Use waitFor to handle async assertions
     await waitFor(() => {
       expect(mockHandleLogin).toHaveBeenCalled();
     });

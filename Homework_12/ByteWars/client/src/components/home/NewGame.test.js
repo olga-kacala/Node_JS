@@ -71,7 +71,7 @@ describe("NewGame Component", () => {
     render(<SingleCard card={middleLuck} onClick={mockOnClick} />);
     render(<SingleCard card={goodLuck} onClick={mockOnClick} />);
 
-    const cardElement = screen.getByText(/badLuck/i);
+    const cardElement = screen.getByText(/goodLuck/i);
     fireEvent.click(cardElement);
 
     expect(mockOnClick).toHaveBeenCalled();

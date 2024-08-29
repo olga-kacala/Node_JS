@@ -28,6 +28,7 @@ test("fetches and displays top results", async () => {
     );
   });
 
+  
   await waitFor(() => {
     expect(
       screen.getByText(/Total Attack: 100, Side: human/)
