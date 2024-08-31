@@ -34,7 +34,7 @@ export const SingleCard = ({ card, onClick }) => {
         </div>
       ) : (
         <div className={classes.front}>
-          <div className={classes.cardName}>
+          <div className={classes.cardName} data-testid="card">
             <h3>{card.name}</h3>
           </div>
           <div className={classes.valuesContainer}>

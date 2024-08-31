@@ -68,4 +68,5 @@ describe("AuthProvider", () => {
     expect(screen.getByText(/Username:/).textContent).toBe("Username: ");
     expect(localStorage.getItem("token")).toBeNull();
   });
+  
 });

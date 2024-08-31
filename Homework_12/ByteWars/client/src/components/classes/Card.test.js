@@ -20,4 +20,5 @@ describe('Card - generatePowerAttack', () => {
     const card = new Card('Unknown', 'robot');
     expect(card.powerAttack).toBe(10);
   });
+  
 });

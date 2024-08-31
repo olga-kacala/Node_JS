@@ -66,4 +66,5 @@ describe("generateCards", () => {
       expect(card).toHaveProperty("luck");
     });
   });
+  
 });

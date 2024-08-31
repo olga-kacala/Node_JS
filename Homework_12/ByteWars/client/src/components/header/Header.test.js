@@ -30,4 +30,5 @@ describe("Header Component", () => {
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", "/");
   });
+  
 });

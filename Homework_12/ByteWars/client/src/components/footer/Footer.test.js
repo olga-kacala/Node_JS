@@ -30,4 +30,5 @@ describe('Footer Component', () => {
     expect(screen.getByAltText('GitHub')).toBeInTheDocument();
     expect(screen.getByAltText('LinkedIn')).toBeInTheDocument();
   });
+  
 });

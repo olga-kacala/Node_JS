@@ -104,7 +104,6 @@ export const NewGame = () => {
       setOpponentHP(data.opponentHealth);
       setStatus(data.gameStatus);
 
-  
       setTotalAttack((prevTotal) => {
         const updatedTotal = prevTotal + attackValue;
 
