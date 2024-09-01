@@ -31,19 +31,31 @@ jobs:
           cd Homework_12/ByteWars
           docker-compose up -d --build
 
-      # Step 4: Run linting
-      - name: Run lint
+      # Step 4: Run linting for server
+      - name: Run server lint
         run: |
           cd Homework_12/ByteWars
           docker-compose exec -T server npm run lint
 
-      # Step 5: Run tests
-      - name: Run tests
+      # Step 5: Run linting for client
+      - name: Run client lint
+        run: |
+          cd Homework_12/ByteWars
+          docker-compose exec -T client npm run lint
+
+      # Step 6: Run tests for server
+      - name: Run server tests
         run: |
           cd Homework_12/ByteWars
           docker-compose exec -T server npm test -- --coverage
 
-      # Step 6: Clean up Docker Compose
+      # Step 7: Run tests for client
+      - name: Run client tests
+        run: |
+          cd Homework_12/ByteWars
+          docker-compose exec -T client npm test -- --coverage
+
+      # Step 8: Clean up Docker Compose
       - name: Shut down Docker Compose
         run: |
           cd Homework_12/ByteWars
