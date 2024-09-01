@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - "Node_JS/Homework_12/**"
+      - "Homework_12/**"
   pull_request:
     branches:
       - main
     paths:
-      - "Node_JS/Homework_12/**"
+      - "Homework_12/**"
 
 jobs:
   docker_compose_and_test:
@@ -21,25 +21,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Install dependencies (if needed for any pre-steps, can usually be skipped in Docker context)
-      - name: Install dependencies
-        working-directory: ./
-        run: npm install
+      # Step 2: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      # Step 3: Set up and run Docker Compose
-      - name: Set up and run Docker Compose
-        run: docker compose up -d --wait
+      # Step 3: Set up Docker Compose
+      - name: Build and start Docker Compose services
+        run: |
+          cd Homework_12/ByteWars
+          docker-compose up -d --build
 
       # Step 4: Run linting
       - name: Run lint
-        working-directory: ./
-        run: npm run lint
+        run: |
+          cd Homework_12/ByteWars
+          docker-compose exec -T server npm run lint
 
       # Step 5: Run tests
       - name: Run tests
-        working-directory: ./
-        run: npm test -- --coverage
+        run: |
+          cd Homework_12/ByteWars
+          docker-compose exec -T server npm test -- --coverage
 
       # Step 6: Clean up Docker Compose
       - name: Shut down Docker Compose
-        run: docker compose down
+        run: |
+          cd Homework_12/ByteWars
+          docker-compose down
