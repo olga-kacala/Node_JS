@@ -25,7 +25,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 3: Set up Docker Compose
+      # Step 3: Build and start Docker Compose services
       - name: Build and start Docker Compose services
         run: |
           cd Homework_12/ByteWars
