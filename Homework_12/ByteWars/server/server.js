@@ -30,6 +30,7 @@ app.post("/api/v1/register", async (req, res) => {
     await user.save();
     res.json({ message: "User registered successfully" });
   } catch (err) {
+    console.error('Registration Error:', err.message);
     res
       .status(500)
       .json({ message: "User registration failed", error: err.message });
@@ -226,3 +227,5 @@ app.get("*", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is runing on http://localhost:${PORT}`);
 });
+
+module.exports = app; 

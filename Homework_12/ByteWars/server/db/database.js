@@ -1,6 +1,6 @@
-const sqlite3 = require("sqlite3").verbose();
+const sqlite3 = require('sqlite3');
 const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, '../.env') });
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const fs = require("fs");
 
@@ -17,7 +17,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Function to apply the schema from schema.sql
 function applySchema() {
   const schemaPath = path.resolve(__dirname, "schema.sql");
   if (fs.existsSync(schemaPath)) {

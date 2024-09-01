@@ -1,14 +1,22 @@
-const Game = require('./Game'); // Adjust the path as needed
+const Game = require('./Game');
 const db = require('../db/database');
 
-jest.mock('../db/database'); // Mock the database module
+jest.mock('../db/database'); 
 
-describe('Game Class', () => {
+describe('Game.save()', () => {
   beforeEach(() => {
-    jest.clearAllMocks(); // Clear mocks before each test
+    jest.clearAllMocks();
+    db.run = jest.fn((query, params, callback) => {
+      callback(null); // Default to success
+    });
+    db.get = jest.fn((query, params, callback) => {
+      callback(null, {}); // Default to empty object for get
+    });
+    db.all = jest.fn((query, params, callback) => {
+      callback(null, []); // Default to empty array for all
+    });
   });
-
-  describe('Game.save()', () => {
+  
     it('should save a new game to the database', async () => {
       // Mock db.run to simulate database insertion
       db.run.mockImplementation((query, params, callback) => {
@@ -189,4 +197,3 @@ describe('Game Class', () => {
       await expect(Game.deleteAll()).rejects.toThrow('Failed to delete all games');
     });
   });
-});

@@ -24,6 +24,9 @@ In _Byte Wars: AI vs Humans_ 🤖, players engage in a whimsical conflict betwee
     - [Install dependencies](#install-dependencies)
     - [Run in Docker Container](#run-in-docker-container)
     - [Access the Application](#access-the-application)
+  - [Testing](#testing)
+    - [How to test the client side](#how-to-test-the-client-side)
+    - [How to test the server side](#how-to-test-the-server-side)
 
 ## Description
 
@@ -281,3 +284,33 @@ Open your browser and navigate to:
 http://localhost:3001/
 
 to interact with the app and start the battle! 💥💥
+
+## Testing
+
+### How to test the client side
+
+Navigate to the client directory:
+
+Homework_12/ByteWars/client
+
+Run tests using npm or yarn:
+
+npm test
+
+or
+
+yarn test
+
+### How to test the server side
+
+Navigate to the server directory:
+
+Homework_12/ByteWars/server
+
+Run tests using npm or yarn:
+
+npm test
+
+or
+
+yarn test
