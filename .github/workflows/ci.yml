@@ -2,9 +2,15 @@ name: CI
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+    paths:
+      - "Node_JS/Homework_12/**"
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
+    paths:
+      - "Node_JS/Homework_12/**"
 
 jobs:
   docker_compose_and_test:
